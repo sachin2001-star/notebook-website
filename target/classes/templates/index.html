@@ -1,0 +1,1842 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link rel="stylesheet" href="/css/styles.css">
+    <title>Notebook Creations | Home</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        html {
+            scroll-behavior: smooth;
+        }
+        body {
+            font-family: 'Montserrat', 'Segoe UI', Arial, sans-serif;
+            background: #f8f9fa;
+        }
+        /* Navbar Styles */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            width: 100%;
+            height: 64px;
+            background: linear-gradient(135deg, #1a237e 0%, #283593 100%);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2rem;
+            box-shadow: 0 4px 16px rgba(26,35,126,0.3);
+            z-index: 999;
+            box-sizing: border-box;
+        }
+        .navbar-brand .logo {
+            font-size: 1.7rem;
+            font-weight: bold;
+            color: #ffd700;
+            text-decoration: none;
+            letter-spacing: 1px;
+            text-shadow: 0 2px 8px rgba(0,0,0,0.3);
+            transition: color 0.3s;
+        }
+        .navbar-brand .logo:hover {
+            color: #ffb300;
+        }
+        .navbar-links {
+            list-style: none;
+            display: flex;
+            gap: 2rem;
+        }
+        .navbar-links li a {
+            text-decoration: none;
+            color: #e8eaf6;
+            font-weight: 500;
+            font-size: 1.08rem;
+            padding: 0.3rem 0.8rem;
+            border-radius: 6px;
+            transition: all 0.3s;
+        }
+        .navbar-links li a:hover {
+            background: #ffd700;
+            color: #1a237e;
+        }
+        /* Hero Slider Styles */
+        .hero-slider {
+            position: relative;
+            width: 100%;
+            height: 500px;
+            overflow: hidden;
+            margin-bottom: 2rem;
+        }
+        .slide {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 0.8s ease-in-out;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .slide.active {
+            opacity: 1;
+        }
+        .slide-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            filter: brightness(0.6);
+            z-index: 1;
+        }
+        .slide-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            color: white;
+            max-width: 800px;
+            padding: 2rem;
+        }
+        .slide-content h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.7);
+            color: #ffd700;
+        }
+        .slide-content p {
+            font-size: 1.3rem;
+            margin-bottom: 2rem;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.7);
+        }
+        .slider-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(26,35,126,0.8);
+            color: #ffd700;
+            border: 2px solid #ffd700;
+            padding: 1rem 1.5rem;
+            font-size: 1.5rem;
+            cursor: pointer;
+            z-index: 3;
+            transition: all 0.3s;
+        }
+        .slider-btn:hover {
+            background: #ffd700;
+            color: #1a237e;
+        }
+        .slider-btn.prev {
+            left: 20px;
+        }
+        .slider-btn.next {
+            right: 20px;
+        }
+        .slider-dots {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 3;
+        }
+        .dot {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            margin: 0 5px;
+            background: rgba(255,215,0,0.5);
+            border-radius: 50%;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        .dot.active {
+            background: #ffd700;
+        }
+        @media (max-width: 768px) {
+            .hero-slider {
+                height: 400px;
+            }
+            .slide-content h1 {
+                font-size: 2rem;
+            }
+            .slide-content p {
+                font-size: 1.1rem;
+            }
+            .slider-btn {
+                padding: 0.8rem 1.2rem;
+                font-size: 1.2rem;
+            }
+        }
+        .hero {
+            background: linear-gradient(135deg, #1a237e 0%, #283593 50%, #3949ab 100%);
+            color: white;
+            padding: 4rem 1rem 3rem 1rem;
+            border-radius: 0 0 32px 32px;
+            box-shadow: 0 8px 32px rgba(26,35,126,0.3);
+            margin-bottom: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+        .hero::after {
+            content: '';
+            position: absolute;
+            left: 0; right: 0; top: 0; bottom: 0;
+            background: linear-gradient(45deg, rgba(255,215,0,0.1) 0%, rgba(255,179,0,0.1) 100%);
+            z-index: 0;
+        }
+        .hero > * { position: relative; z-index: 1; }
+        .hero-title {
+            font-size: 2.7rem;
+            color: #ffd700;
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-shadow: 0 2px 8px rgba(0,0,0,0.3);
+        }
+        .hero-subtitle {
+            font-size: 1.3rem;
+            color: #ffb300;
+            margin-bottom: 1.5rem;
+            font-weight: 500;
+        }
+        .hero-desc {
+            font-size: 1.25rem;
+            color: #e8eaf6;
+            margin-bottom: 2rem;
+        }
+        .cta-btn {
+            background: linear-gradient(45deg, #ffd700 0%, #ffb300 100%);
+            color: #1a237e;
+            padding: 1rem 2.5rem;
+            border: none;
+            border-radius: 32px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            box-shadow: 0 4px 16px rgba(255,215,0,0.3);
+        }
+        .cta-btn:hover {
+            background: linear-gradient(45deg, #ffb300 0%, #ffd700 100%);
+            color: #1a237e;
+            transform: translateY(-2px) scale(1.05);
+            box-shadow: 0 8px 24px rgba(255,215,0,0.4);
+        }
+        .divider {
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(45deg, #ffd700 0%, #ffb300 100%);
+            border-radius: 2px;
+            margin: 2.5rem auto 2rem auto;
+        }
+        .process-section {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 2rem;
+            margin: 2.5rem 0 2rem 0;
+        }
+        .process-step {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(26,35,126,0.1);
+            padding: 1.5rem 1rem;
+            max-width: 220px;
+            flex: 1 1 180px;
+            text-align: center;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+        .process-step:hover {
+            transform: translateY(-8px) scale(1.05);
+            box-shadow: 0 12px 32px rgba(26,35,126,0.2);
+            border-color: #ffd700;
+        }
+        .process-step img {
+            width: 48px;
+            margin-bottom: 0.7rem;
+            filter: drop-shadow(0 2px 4px rgba(26,35,126,0.2));
+        }
+        .testimonials-section {
+            background: linear-gradient(135deg, #e8eaf6 0%, #c5cae9 100%);
+            border-radius: 18px;
+            max-width: 900px;
+            margin: 2rem auto;
+            padding: 2.5rem 1.5rem 2rem 1.5rem;
+            box-shadow: 0 8px 32px rgba(26,35,126,0.1);
+        }
+        .testimonials-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+            justify-content: center;
+        }
+        .testimonial {
+            background: white;
+            border-radius: 14px;
+            box-shadow: 0 4px 16px rgba(26,35,126,0.1);
+            padding: 1.2rem 1rem;
+            max-width: 260px;
+            flex: 1 1 200px;
+            text-align: left;
+            position: relative;
+            animation: fadeIn 1s;
+            border-left: 4px solid #ffd700;
+        }
+        .testimonial:before {
+            content: '"';
+            font-size: 2.5rem;
+            color: #1a237e;
+            position: absolute;
+            left: 12px;
+            top: 2px;
+            opacity: 0.3;
+        }
+        .testimonial .author {
+            font-weight: 600;
+            color: #283593;
+            margin-top: 0.7rem;
+            font-size: 1rem;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .about-icon {
+            width: 60px;
+            margin-bottom: 1rem;
+            filter: drop-shadow(0 2px 8px rgba(26,35,126,0.3));
+        }
+        .about-section {
+            background: white;
+            border-radius: 18px;
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 2.5rem 2rem 2rem 2rem;
+            box-shadow: 0 8px 32px rgba(26,35,126,0.1);
+            border: 1px solid #e8eaf6;
+        }
+        .bio-section {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+        .bio-photo {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            object-fit: cover;
+            box-shadow: 0 4px 16px rgba(26,35,126,0.2);
+            border: 3px solid #ffd700;
+        }
+        .bio-text {
+            flex: 1;
+            text-align: left;
+        }
+        .why-section {
+            background: linear-gradient(135deg, #e8eaf6 0%, #c5cae9 100%);
+            border-radius: 14px;
+            padding: 1.5rem 1rem;
+            margin: 2rem 0;
+        }
+        .gallery-section {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e8eaf6 100%);
+            border-radius: 18px;
+            max-width: 1000px;
+            margin: 2rem auto;
+            padding: 2.5rem 1.5rem 2rem 1.5rem;
+            box-shadow: 0 8px 32px rgba(26,35,126,0.1);
+        }
+        .gallery-category {
+            margin-bottom: 2.5rem;
+        }
+        .gallery-category h3 {
+            color: #1a237e;
+            margin-bottom: 0.5rem;
+        }
+        .gallery-category p {
+            color: #283593;
+            margin-bottom: 1rem;
+            font-size: 1.05rem;
+        }
+        .gallery {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1.5rem;
+            margin: 0 0 1rem 0;
+        }
+        .gallery img {
+            width: 220px;
+            height: 300px;
+            object-fit: cover;
+            border-radius: 12px;
+            box-shadow: 0 4px 16px rgba(26,35,126,0.15);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            background: white;
+        }
+        .gallery img:hover {
+            transform: scale(1.06);
+            box-shadow: 0 8px 24px rgba(26,35,126,0.25);
+        }
+        .lightbox {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0; top: 0; right: 0; bottom: 0;
+            background: rgba(26,35,126,0.9);
+            align-items: center;
+            justify-content: center;
+        }
+        .lightbox.active { display: flex; }
+        .lightbox img {
+            max-width: 90vw;
+            max-height: 80vh;
+            border-radius: 16px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+        }
+        .lightbox-close { position: absolute; top: 20px; right: 30px; font-size: 40px; color: white; cursor: pointer; background: none; border: none; }
+        .contact-section {
+            background: white;
+            border-radius: 18px;
+            max-width: 500px;
+            margin: 2rem auto;
+            padding: 2.5rem 1.5rem 2rem 1.5rem;
+            box-shadow: 0 8px 32px rgba(26,35,126,0.1);
+            border: 1px solid #e8eaf6;
+        }
+        .faq-section {
+            background: linear-gradient(135deg, #e8eaf6 0%, #c5cae9 100%);
+            border-radius: 14px;
+            padding: 1.5rem 1rem;
+            margin: 2rem 0;
+        }
+        .faq-q {
+            font-weight: 600;
+            color: #1a237e;
+            margin-top: 1rem;
+        }
+        .faq-a {
+            margin-bottom: 1rem;
+            color: #283593;
+        }
+        .howto-section {
+            background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%);
+            border-radius: 14px;
+            padding: 1.5rem 1rem;
+            margin: 2rem 0;
+        }
+        .howto-step {
+            margin-bottom: 0.7rem;
+            color: #1a237e;
+        }
+        .contact-form label {
+            display: block;
+            margin-bottom: 0.3rem;
+            font-weight: 500;
+            color: #1a237e;
+        }
+        .contact-form input, .contact-form textarea {
+            width: 100%;
+            padding: 0.7rem;
+            margin-bottom: 1rem;
+            border: 2px solid #e8eaf6;
+            border-radius: 6px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+        .contact-form input:focus, .contact-form textarea:focus {
+            outline: none;
+            border-color: #ffd700;
+        }
+        .contact-form input[type="file"] {
+            padding: 0.3rem 0.2rem;
+            background: #f8f9fa;
+            border: 2px dashed #c5cae9;
+        }
+        .contact-form button {
+            background: linear-gradient(45deg, #1a237e 0%, #283593 100%);
+            color: #ffd700;
+            border: none;
+            padding: 0.7rem 2rem;
+            border-radius: 24px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .contact-form button:hover {
+            background: linear-gradient(45deg, #283593 0%, #1a237e 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px rgba(26,35,126,0.3);
+        }
+        .thank-you {
+            text-align: center;
+            font-size: 1.2rem;
+            margin-top: 1.5rem;
+            font-weight: 600;
+        }
+        .footer-content {
+            margin-top: 2rem;
+        }
+
+        /* Product Showcase Styles */
+        .product-categories { margin-top: 2rem; }
+        .product-category { margin-bottom: 3rem; }
+        .product-category h3 { color: #1a365d; margin-bottom: 1.5rem; font-size: 1.5rem; }
+        .product-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem; }
+        .product-item { background: white; border-radius: 12px; padding: 1.5rem; box-shadow: 0 4px 6px rgba(0,0,0,0.1); transition: transform 0.3s ease, box-shadow 0.3s ease; }
+        .product-item:hover { transform: translateY(-5px); box-shadow: 0 8px 25px rgba(0,0,0,0.15); }
+        .product-item img { width: 100%; height: 180px; object-fit: cover; border-radius: 8px; margin-bottom: 1rem; }
+        .product-item h4 { color: #1a365d; margin-bottom: 0.5rem; font-size: 1.2rem; }
+        .product-item p { color: #4a5568; font-size: 0.95rem; line-height: 1.5; }
+
+        /* Pricing & Packages Styles */
+        .pricing-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 2.5rem; margin: 2rem 0; }
+        .pricing-card { background: white; border-radius: 16px; padding: 2rem; box-shadow: 0 8px 25px rgba(0,0,0,0.1); position: relative; transition: transform 0.3s ease; }
+        .pricing-card:hover { transform: translateY(-8px); }
+        .pricing-card.featured { border: 3px solid #d69e2e; transform: scale(1.05); }
+        .pricing-card.featured:hover { transform: scale(1.05) translateY(-8px); }
+        .pricing-badge { position: absolute; top: -12px; left: 50%; transform: translateX(-50%); background: #d69e2e; color: white; padding: 0.5rem 1.5rem; border-radius: 20px; font-size: 0.9rem; font-weight: bold; }
+        .pricing-header { text-align: center; margin-bottom: 2rem; }
+        .pricing-header h3 { color: #1a365d; font-size: 1.5rem; margin-bottom: 1rem; }
+        .price { font-size: 3rem; font-weight: bold; color: #d69e2e; margin-bottom: 0.5rem; }
+        .price-desc { color: #4a5568; font-size: 1rem; }
+        .pricing-features { margin-bottom: 2rem; }
+        .feature { color: #2d3748; margin-bottom: 0.8rem; font-size: 0.95rem; }
+        .pricing-btn { display: block; width: 100%; padding: 1rem; background: linear-gradient(135deg, #1a365d, #2d3748); color: white; text-decoration: none; border-radius: 8px; text-align: center; font-weight: bold; transition: all 0.3s ease; }
+        .pricing-btn:hover { background: linear-gradient(135deg, #d69e2e, #ed8936); transform: translateY(-2px); }
+        .pricing-notes { background: #f7fafc; border-radius: 12px; padding: 2rem; margin-top: 2rem; }
+        .pricing-notes h3 { color: #1a365d; margin-bottom: 1.5rem; }
+        .service-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem; }
+        .service-item { background: white; padding: 1rem; border-radius: 8px; border-left: 4px solid #d69e2e; }
+
+        /* Customer Reviews Styles */
+        .reviews-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(380px, 1fr)); gap: 2.5rem; margin: 2rem 0; }
+        .review-card { background: white; border-radius: 16px; padding: 2rem; box-shadow: 0 8px 25px rgba(0,0,0,0.1); transition: transform 0.3s ease; }
+        .review-card:hover { transform: translateY(-5px); }
+        .review-header { display: flex; align-items: center; margin-bottom: 1.5rem; }
+        .review-avatar { width: 60px; height: 60px; border-radius: 50%; margin-right: 1rem; }
+        .review-info { flex: 1; }
+        .review-name { font-weight: bold; color: #1a365d; font-size: 1.1rem; }
+        .review-rating { color: #d69e2e; font-size: 1.1rem; margin: 0.3rem 0; }
+        .review-date { color: #718096; font-size: 0.9rem; }
+        .review-content { color: #2d3748; line-height: 1.6; margin-bottom: 1.5rem; font-style: italic; }
+        .review-photo img { width: 100%; height: 120px; object-fit: cover; border-radius: 8px; }
+        .reviews-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 2rem; margin-top: 3rem; text-align: center; }
+        .stat-item { background: white; padding: 2rem; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .stat-number { font-size: 2.5rem; font-weight: bold; color: #d69e2e; margin-bottom: 0.5rem; }
+        .stat-label { color: #4a5568; font-size: 1rem; }
+
+        /* Gallery Filter Button Styles */
+        .filter-btn:hover,
+        .filter-btn.active {
+            background: linear-gradient(45deg, #667eea, #764ba2) !important;
+            color: white !important;
+            border-color: #667eea !important;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        /* Gallery Item Hover Effects */
+        .gallery-item:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .gallery-item.hidden {
+            display: none;
+        }
+
+        /* Gallery Animation */
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .gallery-item:nth-child(1) { animation-delay: 0.1s; }
+        .gallery-item:nth-child(2) { animation-delay: 0.2s; }
+        .gallery-item:nth-child(3) { animation-delay: 0.3s; }
+        .gallery-item:nth-child(4) { animation-delay: 0.4s; }
+        .gallery-item:nth-child(5) { animation-delay: 0.5s; }
+        .gallery-item:nth-child(6) { animation-delay: 0.6s; }
+
+        @media (max-width: 1100px) {
+            .gallery img { width: 45vw; max-width: 320px; height: 180px; }
+        }
+        @media (max-width: 700px) {
+            .hero { padding: 2.5rem 0.5rem 1.5rem 0.5rem; }
+            .hero-title { font-size: 1.5rem; }
+            .about-section, .gallery-section, .contact-section { padding: 1.2rem 0.2rem; }
+            .gallery img { width: 95vw; max-width: 320px; height: 180px; }
+            .bio-section { flex-direction: column; text-align: center; }
+            .bio-photo { margin-bottom: 1rem; }
+            .bio-text { text-align: center; }
+            
+            /* New sections responsive styles */
+            .product-grid { grid-template-columns: 1fr; gap: 1rem; }
+            .product-item { padding: 1rem; }
+            .pricing-grid { grid-template-columns: 1fr; gap: 1.5rem; }
+            .pricing-card.featured { transform: none; }
+            .pricing-card.featured:hover { transform: translateY(-5px); }
+            .reviews-grid { grid-template-columns: 1fr; gap: 1.5rem; }
+            .review-card { padding: 1.5rem; }
+            .reviews-stats { grid-template-columns: repeat(2, 1fr); gap: 1rem; }
+            .stat-item { padding: 1.5rem; }
+            .navbar-links { flex-wrap: wrap; justify-content: center; }
+            .navbar-links li { margin: 0.2rem 0.5rem; }
+        }
+        
+        /* Gallery Section - Full Width */
+        #gallery .about-section {
+            max-width: 1400px;
+            padding: 3rem 2.5rem 2.5rem 2.5rem;
+        }
+        
+        /* Product Showcase Section - Full Width */
+        #products .about-section {
+            max-width: 1400px;
+            padding: 3rem 2.5rem 2.5rem 2.5rem;
+        }
+        
+        /* Contact Section - Full Width */
+        #contact .about-section {
+            max-width: 1400px;
+            padding: 3rem 2.5rem 2.5rem 2.5rem;
+        }
+        
+        /* Footer Section - Full Width */
+        footer {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem 2.5rem;
+        }
+
+        .gallery-image {
+            width: 100%;
+            height: 250px;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5em;
+            font-weight: bold;
+            position: relative;
+            overflow: hidden;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+        
+        .gallery-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+        
+        .gallery-item:hover .gallery-image img {
+            transform: scale(1.1);
+        }
+
+        /* Category-specific colors */
+        .category-spiral .gallery-image { background: linear-gradient(45deg, #2196F3, #21CBF3); }
+        .category-hardcover .gallery-image { background: linear-gradient(45deg, #4CAF50, #8BC34A); }
+        .category-custom .gallery-image { background: linear-gradient(45deg, #9C27B0, #E91E63); }
+        .category-student .gallery-image { background: linear-gradient(45deg, #FF9800, #FFC107); }
+        .category-luxury .gallery-image { background: linear-gradient(45deg, #FFD700, #FFA500); }
+        .category-eco .gallery-image { background: linear-gradient(45deg, #4CAF50, #8BC34A); }
+        .category-pocket .gallery-image { background: linear-gradient(45deg, #E91E63, #9C27B0); }
+        .category-premium .gallery-image { background: linear-gradient(45deg, #607D8B, #455A64); }
+
+        /* Product Showcase Section - Professional Styling */
+        .product-showcase {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e8eaf6 100%);
+            padding: 4rem 0;
+            margin: 3rem 0;
+        }
+        
+        .product-showcase .about-section {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+        
+        .product-showcase h2 {
+            text-align: center;
+            font-size: 2.8rem;
+            font-weight: 800;
+            color: #1a237e;
+            margin-bottom: 1rem;
+            text-shadow: 0 2px 4px rgba(26,35,126,0.1);
+        }
+        
+        .product-showcase .about-section > p {
+            text-align: center;
+            font-size: 1.3rem;
+            color: #283593;
+            margin-bottom: 3rem;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.6;
+        }
+        
+        .product-categories {
+            display: flex;
+            flex-direction: column;
+            gap: 4rem;
+        }
+        
+        .product-category {
+            background: white;
+            border-radius: 20px;
+            padding: 3rem 2rem;
+            box-shadow: 0 15px 35px rgba(26,35,126,0.1);
+            border: 1px solid rgba(26,35,126,0.05);
+            transition: all 0.3s ease;
+        }
+        
+        .product-category:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(26,35,126,0.15);
+        }
+        
+        .product-category h3 {
+            text-align: center;
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: #1a237e;
+            margin-bottom: 2.5rem;
+            position: relative;
+        }
+        
+        .product-category h3::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(45deg, #ffd700, #ffb300);
+            border-radius: 2px;
+        }
+        
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .product-item {
+            background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+            border-radius: 16px;
+            padding: 2rem 1.5rem;
+            text-align: center;
+            box-shadow: 0 8px 25px rgba(26,35,126,0.08);
+            border: 2px solid transparent;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .product-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+        
+        .product-item:hover::before {
+            transform: scaleX(1);
+        }
+        
+        .product-item:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 15px 35px rgba(26,35,126,0.15);
+            border-color: #667eea;
+        }
+        
+        .product-item img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 12px;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .product-item:hover img {
+            transform: scale(1.05);
+            box-shadow: 0 12px 25px rgba(0,0,0,0.15);
+        }
+        
+        .product-item h4 {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #1a237e;
+            margin-bottom: 1rem;
+            position: relative;
+        }
+        
+        .product-item h4::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 40px;
+            height: 2px;
+            background: linear-gradient(45deg, #ffd700, #ffb300);
+            border-radius: 1px;
+        }
+        
+        .product-item p {
+            color: #5a6c7d;
+            font-size: 1rem;
+            line-height: 1.6;
+            margin: 0;
+        }
+        
+        /* Responsive Design for Product Showcase */
+        @media (max-width: 768px) {
+            .product-showcase h2 {
+                font-size: 2.2rem;
+            }
+            
+            .product-showcase .about-section > p {
+                font-size: 1.1rem;
+            }
+            
+            .product-category {
+                padding: 2rem 1.5rem;
+            }
+            
+            .product-category h3 {
+                font-size: 1.8rem;
+            }
+            
+            .product-grid {
+                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                gap: 1.5rem;
+            }
+            
+            .product-item {
+                padding: 1.5rem 1rem;
+            }
+            
+            .product-item img {
+                height: 180px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .product-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .product-category {
+                padding: 1.5rem 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="navbar-brand">
+            <a href="#home" class="logo">Notebook Creations</a>
+        </div>
+        <ul class="navbar-links">
+            <li><a href="#home">Home</a></li>
+            <li><a href="#about">About Us</a></li>
+            <li><a href="#gallery">Gallery</a></li>
+            <li><a href="#products">Products</a></li>
+            <li><a href="#pricing">Pricing</a></li>
+            <li><a href="#reviews">Reviews</a></li>
+            <li><a href="#contact">Contact Us</a></li>
+        </ul>
+    </nav>
+
+    <!-- Hero Slider Section -->
+    <div class="hero-slider">
+        <div class="slide active">
+            <div class="slide-content">
+                <h1>Custom Notebooks, Crafted Just for You</h1>
+                <p>Handmade | Personalized | Unique | Delivered to Your Doorstep</p>
+                <a href="#contact" class="cta-btn">Order Your Custom Notebook</a>
+            </div>
+            <div class="slide-bg" style="background-image: url('https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?auto=format&fit=crop&w=1200&q=80');"></div>
+        </div>
+        <div class="slide">
+            <div class="slide-content">
+                <h1>Perfect for Every Occasion</h1>
+                <p>Birthday gifts, school supplies, business notebooks, and more!</p>
+                <a href="#gallery" class="cta-btn">View Our Gallery</a>
+            </div>
+            <div class="slide-bg" style="background-image: url('https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=1200&q=80');"></div>
+        </div>
+        <div class="slide">
+            <div class="slide-content">
+                <h1>Upload Your Own Design</h1>
+                <p>Send us your artwork, photos, or ideas - we'll bring them to life!</p>
+                <a href="#contact" class="cta-btn">Start Your Design</a>
+            </div>
+            <div class="slide-bg" style="background-image: url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1200&q=80');"></div>
+        </div>
+        <button class="slider-btn prev" onclick="changeSlide(-1)">&#10094;</button>
+        <button class="slider-btn next" onclick="changeSlide(1)">&#10095;</button>
+        <div class="slider-dots">
+            <span class="dot active" onclick="currentSlide(1)"></span>
+            <span class="dot" onclick="currentSlide(2)"></span>
+            <span class="dot" onclick="currentSlide(3)"></span>
+        </div>
+    </div>
+
+    <!-- Home Section -->
+    <section id="home" style="scroll-margin-top:80px;">
+        <div class="hero">
+            <div class="hero-title">Custom Notebooks, Crafted Just for You</div>
+            <div class="hero-subtitle">Handmade | Personalized | Unique | Delivered to Your Doorstep</div>
+            <div class="hero-desc">Bring your ideas to life with personalized notebook covers and handmade quality. Choose your favorite design, or let us create something unique for you!</div>
+            <a href="#contact" class="cta-btn">Order Your Custom Notebook</a>
+        </div>
+        <div class="divider"></div>
+        <h2 style="margin-top:0;">How It Works</h2>
+        <div class="process-section">
+            <div class="process-step">
+                <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/maildotru.svg" alt="Contact Icon" style="width:48px;margin-bottom:0.7rem;">
+                <div><b>1. Contact Us</b></div>
+                <div>Tell us your idea, theme, or upload your own design.</div>
+            </div>
+            <div class="process-step">
+                <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/paintbrush.svg" alt="Design Icon" style="width:48px;margin-bottom:0.7rem;">
+                <div><b>2. We Design</b></div>
+                <div>We create a custom cover and notebook as per your request.</div>
+            </div>
+            <div class="process-step">
+                <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/package.svg" alt="Delivery Icon" style="width:48px;margin-bottom:0.7rem;">
+                <div><b>3. Fast Delivery</b></div>
+                <div>Your notebook is delivered to your doorstep, ready to use or gift!</div>
+            </div>
+        </div>
+        <div class="divider"></div>
+        <h2>What Our Customers Say</h2>
+        <div class="testimonials-section">
+            <div class="testimonials-list">
+                <div class="testimonial">
+                    The custom notebook was exactly what I wanted! The quality is amazing and the cover design was perfect. <div class="author">- Priya S.</div>
+                </div>
+                <div class="testimonial">
+                    My kids loved their personalized notebooks. Thank you for making their school supplies so special! <div class="author">- Rahul M.</div>
+                </div>
+                <div class="testimonial">
+                    Fast delivery and beautiful work. I'll definitely order again for gifts! <div class="author">- Anjali K.</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gallery Section -->
+    <section id="gallery" style="scroll-margin-top:80px;">
+        <div class="about-section">
+            <h2>📚 Notebook Gallery</h2>
+            <p>Explore our diverse collection of premium notebooks. From spiral-bound to hardcover, custom designs to student specials - find the perfect notebook for every need.</p>
+            
+            <div class="filter-container" style="background: white; padding: 20px; border-radius: 12px; margin: 2rem 0; box-shadow: 0 4px 20px rgba(0,0,0,0.1);">
+                <div class="filter-buttons" style="display: flex; justify-content: center; gap: 15px; flex-wrap: wrap;">
+                    <button class="filter-btn active" data-category="all" style="background: #f8f9fa; border: 2px solid #e9ecef; color: #495057; padding: 12px 24px; border-radius: 25px; cursor: pointer; transition: all 0.3s ease; font-weight: 600; font-size: 1em;">All Products</button>
+                    <button class="filter-btn" data-category="spiral" style="background: #f8f9fa; border: 2px solid #e9ecef; color: #495057; padding: 12px 24px; border-radius: 25px; cursor: pointer; transition: all 0.3s ease; font-weight: 600; font-size: 1em;">Spiral Notebooks</button>
+                    <button class="filter-btn" data-category="hardcover" style="background: #f8f9fa; border: 2px solid #e9ecef; color: #495057; padding: 12px 24px; border-radius: 25px; cursor: pointer; transition: all 0.3s ease; font-weight: 600; font-size: 1em;">Hardcover Notebooks</button>
+                    <button class="filter-btn" data-category="custom" style="background: #f8f9fa; border: 2px solid #e9ecef; color: #495057; padding: 12px 24px; border-radius: 25px; cursor: pointer; transition: all 0.3s ease; font-weight: 600; font-size: 1em;">Custom Designs</button>
+                    <button class="filter-btn" data-category="student" style="background: #f8f9fa; border: 2px solid #e9ecef; color: #495057; padding: 12px 24px; border-radius: 25px; cursor: pointer; transition: all 0.3s ease; font-weight: 600; font-size: 1em;">Student Specials</button>
+                    <button class="filter-btn" data-category="luxury" style="background: #f8f9fa; border: 2px solid #e9ecef; color: #495057; padding: 12px 24px; border-radius: 25px; cursor: pointer; transition: all 0.3s ease; font-weight: 600; font-size: 1em;">Luxury Collection</button>
+                    <button class="filter-btn" data-category="eco" style="background: #f8f9fa; border: 2px solid #e9ecef; color: #495057; padding: 12px 24px; border-radius: 25px; cursor: pointer; transition: all 0.3s ease; font-weight: 600; font-size: 1em;">Eco-Friendly</button>
+                    <button class="filter-btn" data-category="pocket" style="background: #f8f9fa; border: 2px solid #e9ecef; color: #495057; padding: 12px 24px; border-radius: 25px; cursor: pointer; transition: all 0.3s ease; font-weight: 600; font-size: 1em;">Pocket Size</button>
+                    <button class="filter-btn" data-category="premium" style="background: #f8f9fa; border: 2px solid #e9ecef; color: #495057; padding: 12px 24px; border-radius: 25px; cursor: pointer; transition: all 0.3s ease; font-weight: 600; font-size: 1em;">Premium Series</button>
+                </div>
+            </div>
+            
+            <div class="gallery-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 35px; margin-top: 40px;">
+                <!-- Spiral Notebooks -->
+                <div class="gallery-item category-spiral" data-category="spiral" style="background: white; border-radius: 15px; overflow: hidden; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1); transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);">
+                    <div class="gallery-image" style="width: 100%; height: 250px; background: linear-gradient(45deg, #2196F3, #21CBF3); display: flex; align-items: center; justify-content: center; color: white; font-size: 1.5em; font-weight: bold; position: relative; overflow: hidden; background-size: cover; background-position: center; background-repeat: no-repeat;">
+                        <img src="https://images.unsplash.com/photo-1589998059171-988d887df646?w=400&h=250&fit=crop" alt="Classic Spiral Notebook">
+                        <div class="gallery-overlay" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(255, 255, 255, 0.95); color: #2d133b; padding: 10px 20px; border-radius: 20px; font-size: 0.9em; font-weight: 600; opacity: 0; transition: opacity 0.3s ease;">Premium Quality</div>
+                    </div>
+                    <div class="gallery-content" style="padding: 25px;">
+                        <h3 class="gallery-title" style="font-size: 1.3em; font-weight: 700; color: #2d133b; margin: 0 0 10px 0;">Classic Spiral Notebook</h3>
+                        <p class="gallery-description" style="color: #6c757d; font-size: 0.95em; line-height: 1.5; margin: 0 0 20px 0;">High-quality spiral-bound notebook with durable cover and smooth paper.</p>
+                        <div class="gallery-price" style="font-size: 1.2em; font-weight: 700; color: #28a745; margin: 0 0 15px 0;">₹150</div>
+                        <a href="#contact" class="gallery-cta" style="background: linear-gradient(45deg, #667eea, #764ba2); color: white; text-decoration: none; padding: 12px 24px; border-radius: 25px; font-weight: 600; display: inline-block; transition: all 0.3s ease; text-align: center; width: 100%; box-sizing: border-box; font-size: 1em;">Order Now</a>
+                    </div>
+                </div>
+                
+                <div class="gallery-item category-spiral" data-category="spiral" style="background: white; border-radius: 15px; overflow: hidden; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1); transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);">
+                    <div class="gallery-image" style="width: 100%; height: 250px; background: linear-gradient(45deg, #2196F3, #21CBF3); display: flex; align-items: center; justify-content: center; color: white; font-size: 1.5em; font-weight: bold; position: relative; overflow: hidden; background-size: cover; background-position: center; background-repeat: no-repeat;">
+                        <img src="https://images.unsplash.com/photo-1513475382585-d06e58bcb0e0?w=400&h=250&fit=crop" alt="Professional Spiral">
+                        <div class="gallery-overlay" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(255, 255, 255, 0.95); color: #2d133b; padding: 10px 20px; border-radius: 20px; font-size: 0.9em; font-weight: 600; opacity: 0; transition: opacity 0.3s ease;">Professional</div>
+                    </div>
+                    <div class="gallery-content" style="padding: 25px;">
+                        <h3 class="gallery-title" style="font-size: 1.3em; font-weight: 700; color: #2d133b; margin: 0 0 10px 0;">Professional Spiral</h3>
+                        <p class="gallery-description" style="color: #6c757d; font-size: 0.95em; line-height: 1.5; margin: 0 0 20px 0;">Professional spiral notebook perfect for office and business use.</p>
+                        <div class="gallery-price" style="font-size: 1.2em; font-weight: 700; color: #28a745; margin: 0 0 15px 0;">₹180</div>
+                        <a href="#contact" class="gallery-cta" style="background: linear-gradient(45deg, #667eea, #764ba2); color: white; text-decoration: none; padding: 12px 24px; border-radius: 25px; font-weight: 600; display: inline-block; transition: all 0.3s ease; text-align: center; width: 100%; box-sizing: border-box; font-size: 1em;">Order Now</a>
+                    </div>
+                </div>
+                
+                <!-- Hardcover Notebooks -->
+                <div class="gallery-item category-hardcover" data-category="hardcover" style="background: white; border-radius: 15px; overflow: hidden; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1); transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);">
+                    <div class="gallery-image" style="width: 100%; height: 250px; background: linear-gradient(45deg, #4CAF50, #8BC34A); display: flex; align-items: center; justify-content: center; color: white; font-size: 1.5em; font-weight: bold; position: relative; overflow: hidden; background-size: cover; background-position: center; background-repeat: no-repeat;">
+                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=250&fit=crop" alt="Executive Hardcover">
+                        <div class="gallery-overlay" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(255, 255, 255, 0.95); color: #2d133b; padding: 10px 20px; border-radius: 20px; font-size: 0.9em; font-weight: 600; opacity: 0; transition: opacity 0.3s ease;">Executive Style</div>
+                    </div>
+                    <div class="gallery-content" style="padding: 25px;">
+                        <h3 class="gallery-title" style="font-size: 1.3em; font-weight: 700; color: #2d133b; margin: 0 0 10px 0;">Executive Hardcover</h3>
+                        <p class="gallery-description" style="color: #6c757d; font-size: 0.95em; line-height: 1.5; margin: 0 0 20px 0;">Premium hardcover notebook with leather-like finish and gold accents.</p>
+                        <div class="gallery-price" style="font-size: 1.2em; font-weight: 700; color: #28a745; margin: 0 0 15px 0;">₹350</div>
+                        <a href="#contact" class="gallery-cta" style="background: linear-gradient(45deg, #667eea, #764ba2); color: white; text-decoration: none; padding: 12px 24px; border-radius: 25px; font-weight: 600; display: inline-block; transition: all 0.3s ease; text-align: center; width: 100%; box-sizing: border-box; font-size: 1em;">Order Now</a>
+                    </div>
+                </div>
+                
+                <div class="gallery-item category-hardcover" data-category="hardcover" style="background: white; border-radius: 15px; overflow: hidden; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1); transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);">
+                    <div class="gallery-image" style="width: 100%; height: 250px; background: linear-gradient(45deg, #4CAF50, #8BC34A); display: flex; align-items: center; justify-content: center; color: white; font-size: 1.5em; font-weight: bold; position: relative; overflow: hidden; background-size: cover; background-position: center; background-repeat: no-repeat;">
+                        <img src="https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=400&h=250&fit=crop" alt="Classic Hardcover">
+                        <div class="gallery-overlay" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(255, 255, 255, 0.95); color: #2d133b; padding: 10px 20px; border-radius: 20px; font-size: 0.9em; font-weight: 600; opacity: 0; transition: opacity 0.3s ease;">Classic Design</div>
+                    </div>
+                    <div class="gallery-content" style="padding: 25px;">
+                        <h3 class="gallery-title" style="font-size: 1.3em; font-weight: 700; color: #2d133b; margin: 0 0 10px 0;">Classic Hardcover</h3>
+                        <p class="gallery-description" style="color: #6c757d; font-size: 0.95em; line-height: 1.5; margin: 0 0 20px 0;">Timeless hardcover design with sturdy binding and quality paper.</p>
+                        <div class="gallery-price" style="font-size: 1.2em; font-weight: 700; color: #28a745; margin: 0 0 15px 0;">₹280</div>
+                        <a href="#contact" class="gallery-cta" style="background: linear-gradient(45deg, #667eea, #764ba2); color: white; text-decoration: none; padding: 12px 24px; border-radius: 25px; font-weight: 600; display: inline-block; transition: all 0.3s ease; text-align: center; width: 100%; box-sizing: border-box; font-size: 1em;">Order Now</a>
+                    </div>
+                </div>
+                
+                <!-- Custom Designs -->
+                <div class="gallery-item category-custom" data-category="custom" style="background: white; border-radius: 15px; overflow: hidden; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1); transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);">
+                    <div class="gallery-image" style="width: 100%; height: 250px; background: linear-gradient(45deg, #9C27B0, #E91E63); display: flex; align-items: center; justify-content: center; color: white; font-size: 1.5em; font-weight: bold; position: relative; overflow: hidden; background-size: cover; background-position: center; background-repeat: no-repeat;">
+                        <img src="https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400&h=250&fit=crop" alt="Personalized Notebook">
+                        <div class="gallery-overlay" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(255, 255, 255, 0.95); color: #2d133b; padding: 10px 20px; border-radius: 20px; font-size: 0.9em; font-weight: 600; opacity: 0; transition: opacity 0.3s ease;">Personalized</div>
+                    </div>
+                    <div class="gallery-content" style="padding: 25px;">
+                        <h3 class="gallery-title" style="font-size: 1.3em; font-weight: 700; color: #2d133b; margin: 0 0 10px 0;">Personalized Notebook</h3>
+                        <p class="gallery-description" style="color: #6c757d; font-size: 0.95em; line-height: 1.5; margin: 0 0 20px 0;">Custom notebook with your name, photo, or personal message printed.</p>
+                        <div class="gallery-price" style="font-size: 1.2em; font-weight: 700; color: #28a745; margin: 0 0 15px 0;">₹200</div>
+                        <a href="#contact" class="gallery-cta" style="background: linear-gradient(45deg, #667eea, #764ba2); color: white; text-decoration: none; padding: 12px 24px; border-radius: 25px; font-weight: 600; display: inline-block; transition: all 0.3s ease; text-align: center; width: 100%; box-sizing: border-box; font-size: 1em;">Order Now</a>
+                    </div>
+                </div>
+                
+                <div class="gallery-item category-custom" data-category="custom" style="background: white; border-radius: 15px; overflow: hidden; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1); transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);">
+                    <div class="gallery-image" style="width: 100%; height: 250px; background: linear-gradient(45deg, #9C27B0, #E91E63); display: flex; align-items: center; justify-content: center; color: white; font-size: 1.5em; font-weight: bold; position: relative; overflow: hidden; background-size: cover; background-position: center; background-repeat: no-repeat;">
+                        <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&h=250&fit=crop" alt="Corporate Branded">
+                        <div class="gallery-overlay" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(255, 255, 255, 0.95); color: #2d133b; padding: 10px 20px; border-radius: 20px; font-size: 0.9em; font-weight: 600; opacity: 0; transition: opacity 0.3s ease;">Corporate Branding</div>
+                    </div>
+                    <div class="gallery-content" style="padding: 25px;">
+                        <h3 class="gallery-title" style="font-size: 1.3em; font-weight: 700; color: #2d133b; margin: 0 0 10px 0;">Corporate Branded</h3>
+                        <p class="gallery-description" style="color: #6c757d; font-size: 0.95em; line-height: 1.5; margin: 0 0 20px 0;">Custom notebooks with your company logo and branding elements.</p>
+                        <div class="gallery-price" style="font-size: 1.2em; font-weight: 700; color: #28a745; margin: 0 0 15px 0;">₹180</div>
+                        <a href="#contact" class="gallery-cta" style="background: linear-gradient(45deg, #667eea, #764ba2); color: white; text-decoration: none; padding: 12px 24px; border-radius: 25px; font-weight: 600; display: inline-block; transition: all 0.3s ease; text-align: center; width: 100%; box-sizing: border-box; font-size: 1em;">Order Now</a>
+                    </div>
+                </div>
+                
+                <!-- Student Specials -->
+                <div class="gallery-item category-student" data-category="student" style="background: white; border-radius: 15px; overflow: hidden; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1); transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);">
+                    <div class="gallery-image" style="width: 100%; height: 250px; background: linear-gradient(45deg, #FF9800, #FFC107); display: flex; align-items: center; justify-content: center; color: white; font-size: 1.5em; font-weight: bold; position: relative; overflow: hidden; background-size: cover; background-position: center; background-repeat: no-repeat;">
+                        <img src="https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=400&h=250&fit=crop" alt="Study Pack Notebook">
+                        <div class="gallery-overlay" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(255, 255, 255, 0.95); color: #2d133b; padding: 10px 20px; border-radius: 20px; font-size: 0.9em; font-weight: 600; opacity: 0; transition: opacity 0.3s ease;">Study Pack</div>
+                    </div>
+                    <div class="gallery-content" style="padding: 25px;">
+                        <h3 class="gallery-title" style="font-size: 1.3em; font-weight: 700; color: #2d133b; margin: 0 0 10px 0;">Study Pack Notebook</h3>
+                        <p class="gallery-description" style="color: #6c757d; font-size: 0.95em; line-height: 1.5; margin: 0 0 20px 0;">Complete study pack with multiple notebooks and accessories.</p>
+                        <div class="gallery-price" style="font-size: 1.2em; font-weight: 700; color: #28a745; margin: 0 0 15px 0;">₹300</div>
+                        <a href="#contact" class="gallery-cta" style="background: linear-gradient(45deg, #667eea, #764ba2); color: white; text-decoration: none; padding: 12px 24px; border-radius: 25px; font-weight: 600; display: inline-block; transition: all 0.3s ease; text-align: center; width: 100%; box-sizing: border-box; font-size: 1em;">Order Now</a>
+                    </div>
+                </div>
+                
+                <div class="gallery-item category-student" data-category="student" style="background: white; border-radius: 15px; overflow: hidden; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1); transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);">
+                    <div class="gallery-image" style="width: 100%; height: 250px; background: linear-gradient(45deg, #FF9800, #FFC107); display: flex; align-items: center; justify-content: center; color: white; font-size: 1.5em; font-weight: bold; position: relative; overflow: hidden; background-size: cover; background-position: center; background-repeat: no-repeat;">
+                        <img src="https://images.unsplash.com/photo-1455390582262-044cdead277a?w=400&h=250&fit=crop" alt="Subject Notebooks">
+                        <div class="gallery-overlay" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(255, 255, 255, 0.95); color: #2d133b; padding: 10px 20px; border-radius: 20px; font-size: 0.9em; font-weight: 600; opacity: 0; transition: opacity 0.3s ease;">Subject Wise</div>
+                    </div>
+                    <div class="gallery-content" style="padding: 25px;">
+                        <h3 class="gallery-title" style="font-size: 1.3em; font-weight: 700; color: #2d133b; margin: 0 0 10px 0;">Subject Notebooks</h3>
+                        <p class="gallery-description" style="color: #6c757d; font-size: 0.95em; line-height: 1.5; margin: 0 0 20px 0;">Subject-specific notebooks for Maths, Science, English, etc.</p>
+                        <div class="gallery-price" style="font-size: 1.2em; font-weight: 700; color: #28a745; margin: 0 0 15px 0;">₹100</div>
+                        <a href="#contact" class="gallery-cta" style="background: linear-gradient(45deg, #667eea, #764ba2); color: white; text-decoration: none; padding: 12px 24px; border-radius: 25px; font-weight: 600; display: inline-block; transition: all 0.3s ease; text-align: center; width: 100%; box-sizing: border-box; font-size: 1em;">Order Now</a>
+                    </div>
+                </div>
+                
+                <!-- Additional Gallery Items -->
+                <div class="gallery-item category-spiral" data-category="spiral" style="background: white; border-radius: 15px; overflow: hidden; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1); transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);">
+                    <div class="gallery-image" style="width: 100%; height: 250px; background: linear-gradient(45deg, #2196F3, #21CBF3); display: flex; align-items: center; justify-content: center; color: white; font-size: 1.5em; font-weight: bold; position: relative; overflow: hidden; background-size: cover; background-position: center; background-repeat: no-repeat;">
+                        <img src="https://images.unsplash.com/photo-1512820790803-83ca734da794?w=400&h=250&fit=crop" alt="Travel Notebook">
+                        <div class="gallery-overlay" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(255, 255, 255, 0.95); color: #2d133b; padding: 10px 20px; border-radius: 20px; font-size: 0.9em; font-weight: 600; opacity: 0; transition: opacity 0.3s ease;">Travel Ready</div>
+                    </div>
+                    <div class="gallery-content" style="padding: 25px;">
+                        <h3 class="gallery-title" style="font-size: 1.3em; font-weight: 700; color: #2d133b; margin: 0 0 10px 0;">Travel Notebook</h3>
+                        <p class="gallery-description" style="color: #6c757d; font-size: 0.95em; line-height: 1.5; margin: 0 0 20px 0;">Compact spiral notebook perfect for travel and on-the-go note-taking.</p>
+                        <div class="gallery-price" style="font-size: 1.2em; font-weight: 700; color: #28a745; margin: 0 0 15px 0;">₹90</div>
+                        <a href="#contact" class="gallery-cta" style="background: linear-gradient(45deg, #667eea, #764ba2); color: white; text-decoration: none; padding: 12px 24px; border-radius: 25px; font-weight: 600; display: inline-block; transition: all 0.3s ease; text-align: center; width: 100%; box-sizing: border-box; font-size: 1em;">Order Now</a>
+                    </div>
+                </div>
+                
+                <div class="gallery-item category-hardcover" data-category="hardcover" style="background: white; border-radius: 15px; overflow: hidden; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1); transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);">
+                    <div class="gallery-image" style="width: 100%; height: 250px; background: linear-gradient(45deg, #4CAF50, #8BC34A); display: flex; align-items: center; justify-content: center; color: white; font-size: 1.5em; font-weight: bold; position: relative; overflow: hidden; background-size: cover; background-position: center; background-repeat: no-repeat;">
+                        <img src="https://images.unsplash.com/photo-1541339907198-e08756dedf3f?w=400&h=250&fit=crop" alt="Journal Hardcover">
+                        <div class="gallery-overlay" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(255, 255, 255, 0.95); color: #2d133b; padding: 10px 20px; border-radius: 20px; font-size: 0.9em; font-weight: 600; opacity: 0; transition: opacity 0.3s ease;">Personal Journal</div>
+                    </div>
+                    <div class="gallery-content" style="padding: 25px;">
+                        <h3 class="gallery-title" style="font-size: 1.3em; font-weight: 700; color: #2d133b; margin: 0 0 10px 0;">Personal Journal</h3>
+                        <p class="gallery-description" style="color: #6c757d; font-size: 0.95em; line-height: 1.5; margin: 0 0 20px 0;">Beautiful hardcover journal for personal writing and reflection.</p>
+                        <div class="gallery-price" style="font-size: 1.2em; font-weight: 700; color: #28a745; margin: 0 0 15px 0;">₹280</div>
+                        <a href="#contact" class="gallery-cta" style="background: linear-gradient(45deg, #667eea, #764ba2); color: white; text-decoration: none; padding: 12px 24px; border-radius: 25px; font-weight: 600; display: inline-block; transition: all 0.3s ease; text-align: center; width: 100%; box-sizing: border-box; font-size: 1em;">Order Now</a>
+                    </div>
+                </div>
+                
+                <div class="gallery-item category-custom" data-category="custom" style="background: white; border-radius: 15px; overflow: hidden; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1); transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);">
+                    <div class="gallery-image" style="width: 100%; height: 250px; background: linear-gradient(45deg, #9C27B0, #E91E63); display: flex; align-items: center; justify-content: center; color: white; font-size: 1.5em; font-weight: bold; position: relative; overflow: hidden; background-size: cover; background-position: center; background-repeat: no-repeat;">
+                        <img src="https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400&h=250&fit=crop" alt="Wedding Guest Book">
+                        <div class="gallery-overlay" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(255, 255, 255, 0.95); color: #2d133b; padding: 10px 20px; border-radius: 20px; font-size: 0.9em; font-weight: 600; opacity: 0; transition: opacity 0.3s ease;">Special Occasion</div>
+                    </div>
+                    <div class="gallery-content" style="padding: 25px;">
+                        <h3 class="gallery-title" style="font-size: 1.3em; font-weight: 700; color: #2d133b; margin: 0 0 10px 0;">Wedding Guest Book</h3>
+                        <p class="gallery-description" style="color: #6c757d; font-size: 0.95em; line-height: 1.5; margin: 0 0 20px 0;">Elegant custom guest book for weddings and special celebrations.</p>
+                        <div class="gallery-price" style="font-size: 1.2em; font-weight: 700; color: #28a745; margin: 0 0 15px 0;">₹350</div>
+                        <a href="#contact" class="gallery-cta" style="background: linear-gradient(45deg, #667eea, #764ba2); color: white; text-decoration: none; padding: 12px 24px; border-radius: 25px; font-weight: 600; display: inline-block; transition: all 0.3s ease; text-align: center; width: 100%; box-sizing: border-box; font-size: 1em;">Order Now</a>
+                    </div>
+                </div>
+                
+                <div class="gallery-item category-student" data-category="student" style="background: white; border-radius: 15px; overflow: hidden; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1); transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);">
+                    <div class="gallery-image" style="width: 100%; height: 250px; background: linear-gradient(45deg, #FF9800, #FFC107); display: flex; align-items: center; justify-content: center; color: white; font-size: 1.5em; font-weight: bold; position: relative; overflow: hidden; background-size: cover; background-position: center; background-repeat: no-repeat;">
+                        <img src="https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=400&h=250&fit=crop" alt="Exam Notebook">
+                        <div class="gallery-overlay" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(255, 255, 255, 0.95); color: #2d133b; padding: 10px 20px; border-radius: 20px; font-size: 0.9em; font-weight: 600; opacity: 0; transition: opacity 0.3s ease;">Exam Ready</div>
+                    </div>
+                    <div class="gallery-content" style="padding: 25px;">
+                        <h3 class="gallery-title" style="font-size: 1.3em; font-weight: 700; color: #2d133b; margin: 0 0 10px 0;">Exam Notebook</h3>
+                        <p class="gallery-description" style="color: #6c757d; font-size: 0.95em; line-height: 1.5; margin: 0 0 20px 0;">Special exam notebooks with proper formatting and quality paper.</p>
+                        <div class="gallery-price" style="font-size: 1.2em; font-weight: 700; color: #28a745; margin: 0 0 15px 0;">₹80</div>
+                        <a href="#contact" class="gallery-cta" style="background: linear-gradient(45deg, #667eea, #764ba2); color: white; text-decoration: none; padding: 12px 24px; border-radius: 25px; font-weight: 600; display: inline-block; transition: all 0.3s ease; text-align: center; width: 100%; box-sizing: border-box; font-size: 1em;">Order Now</a>
+                    </div>
+                </div>
+                
+                <!-- Luxury Collection -->
+                <div class="gallery-item category-luxury" data-category="luxury" style="background: white; border-radius: 15px; overflow: hidden; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1); transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);">
+                    <div class="gallery-image" style="width: 100%; height: 250px; background: linear-gradient(45deg, #FFD700, #FFA500); display: flex; align-items: center; justify-content: center; color: white; font-size: 1.5em; font-weight: bold; position: relative; overflow: hidden; background-size: cover; background-position: center; background-repeat: no-repeat;">
+                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=250&fit=crop" alt="Leather Bound Luxury">
+                        <div class="gallery-overlay" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(255, 255, 255, 0.95); color: #2d133b; padding: 10px 20px; border-radius: 20px; font-size: 0.9em; font-weight: 600; opacity: 0; transition: opacity 0.3s ease;">Premium Leather</div>
+                    </div>
+                    <div class="gallery-content" style="padding: 25px;">
+                        <h3 class="gallery-title" style="font-size: 1.3em; font-weight: 700; color: #2d133b; margin: 0 0 10px 0;">Leather Bound Luxury</h3>
+                        <p class="gallery-description" style="color: #6c757d; font-size: 0.95em; line-height: 1.5; margin: 0 0 20px 0;">Premium leather-bound notebook with gold foil embossing and silk ribbon.</p>
+                        <div class="gallery-price" style="font-size: 1.2em; font-weight: 700; color: #28a745; margin: 0 0 15px 0;">₹800</div>
+                        <a href="#contact" class="gallery-cta" style="background: linear-gradient(45deg, #667eea, #764ba2); color: white; text-decoration: none; padding: 12px 24px; border-radius: 25px; font-weight: 600; display: inline-block; transition: all 0.3s ease; text-align: center; width: 100%; box-sizing: border-box; font-size: 1em;">Order Now</a>
+                    </div>
+                </div>
+                
+                <div class="gallery-item category-luxury" data-category="luxury" style="background: white; border-radius: 15px; overflow: hidden; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1); transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);">
+                    <div class="gallery-image" style="width: 100%; height: 250px; background: linear-gradient(45deg, #FFD700, #FFA500); display: flex; align-items: center; justify-content: center; color: white; font-size: 1.5em; font-weight: bold; position: relative; overflow: hidden; background-size: cover; background-position: center; background-repeat: no-repeat;">
+                        <img src="https://images.unsplash.com/photo-1541339907198-e08756dedf3f?w=400&h=250&fit=crop" alt="Executive Collection">
+                        <div class="gallery-overlay" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(255, 255, 255, 0.95); color: #2d133b; padding: 10px 20px; border-radius: 20px; font-size: 0.9em; font-weight: 600; opacity: 0; transition: opacity 0.3s ease;">Executive Style</div>
+                    </div>
+                    <div class="gallery-content" style="padding: 25px;">
+                        <h3 class="gallery-title" style="font-size: 1.3em; font-weight: 700; color: #2d133b; margin: 0 0 10px 0;">Executive Collection</h3>
+                        <p class="gallery-description" style="color: #6c757d; font-size: 0.95em; line-height: 1.5; margin: 0 0 20px 0;">Luxury executive notebook with premium materials and sophisticated design.</p>
+                        <div class="gallery-price" style="font-size: 1.2em; font-weight: 700; color: #28a745; margin: 0 0 15px 0;">₹650</div>
+                        <a href="#contact" class="gallery-cta" style="background: linear-gradient(45deg, #667eea, #764ba2); color: white; text-decoration: none; padding: 12px 24px; border-radius: 25px; font-weight: 600; display: inline-block; transition: all 0.3s ease; text-align: center; width: 100%; box-sizing: border-box; font-size: 1em;">Order Now</a>
+                    </div>
+                </div>
+                
+                <!-- Eco-Friendly -->
+                <div class="gallery-item category-eco" data-category="eco" style="background: white; border-radius: 15px; overflow: hidden; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1); transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);">
+                    <div class="gallery-image" style="width: 100%; height: 250px; background: linear-gradient(45deg, #4CAF50, #8BC34A); display: flex; align-items: center; justify-content: center; color: white; font-size: 1.5em; font-weight: bold; position: relative; overflow: hidden; background-size: cover; background-position: center; background-repeat: no-repeat;">
+                        <img src="https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=400&h=250&fit=crop" alt="Recycled Paper">
+                        <div class="gallery-overlay" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(255, 255, 255, 0.95); color: #2d133b; padding: 10px 20px; border-radius: 20px; font-size: 0.9em; font-weight: 600; opacity: 0; transition: opacity 0.3s ease;">100% Recycled</div>
+                    </div>
+                    <div class="gallery-content" style="padding: 25px;">
+                        <h3 class="gallery-title" style="font-size: 1.3em; font-weight: 700; color: #2d133b; margin: 0 0 10px 0;">Recycled Paper Notebook</h3>
+                        <p class="gallery-description" style="color: #6c757d; font-size: 0.95em; line-height: 1.5; margin: 0 0 20px 0;">Environmentally friendly notebook made from 100% recycled materials.</p>
+                        <div class="gallery-price" style="font-size: 1.2em; font-weight: 700; color: #28a745; margin: 0 0 15px 0;">₹120</div>
+                        <a href="#contact" class="gallery-cta" style="background: linear-gradient(45deg, #667eea, #764ba2); color: white; text-decoration: none; padding: 12px 24px; border-radius: 25px; font-weight: 600; display: inline-block; transition: all 0.3s ease; text-align: center; width: 100%; box-sizing: border-box; font-size: 1em;">Order Now</a>
+                    </div>
+                </div>
+                
+                <div class="gallery-item category-eco" data-category="eco" style="background: white; border-radius: 15px; overflow: hidden; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1); transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);">
+                    <div class="gallery-image" style="width: 100%; height: 250px; background: linear-gradient(45deg, #4CAF50, #8BC34A); display: flex; align-items: center; justify-content: center; color: white; font-size: 1.5em; font-weight: bold; position: relative; overflow: hidden; background-size: cover; background-position: center; background-repeat: no-repeat;">
+                        <img src="https://images.unsplash.com/photo-1513475382585-d06e58bcb0e0?w=400&h=250&fit=crop" alt="Bamboo Cover">
+                        <div class="gallery-overlay" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(255, 255, 255, 0.95); color: #2d133b; padding: 10px 20px; border-radius: 20px; font-size: 0.9em; font-weight: 600; opacity: 0; transition: opacity 0.3s ease;">Bamboo Cover</div>
+                    </div>
+                    <div class="gallery-content" style="padding: 25px;">
+                        <h3 class="gallery-title" style="font-size: 1.3em; font-weight: 700; color: #2d133b; margin: 0 0 10px 0;">Bamboo Cover Notebook</h3>
+                        <p class="gallery-description" style="color: #6c757d; font-size: 0.95em; line-height: 1.5; margin: 0 0 20px 0;">Sustainable notebook with bamboo cover and eco-friendly paper.</p>
+                        <div class="gallery-price" style="font-size: 1.2em; font-weight: 700; color: #28a745; margin: 0 0 15px 0;">₹180</div>
+                        <a href="#contact" class="gallery-cta" style="background: linear-gradient(45deg, #667eea, #764ba2); color: white; text-decoration: none; padding: 12px 24px; border-radius: 25px; font-weight: 600; display: inline-block; transition: all 0.3s ease; text-align: center; width: 100%; box-sizing: border-box; font-size: 1em;">Order Now</a>
+                    </div>
+                </div>
+                
+                <!-- Pocket Size -->
+                <div class="gallery-item category-pocket" data-category="pocket" style="background: white; border-radius: 15px; overflow: hidden; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1); transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);">
+                    <div class="gallery-image" style="width: 100%; height: 250px; background: linear-gradient(45deg, #E91E63, #9C27B0); display: flex; align-items: center; justify-content: center; color: white; font-size: 1.5em; font-weight: bold; position: relative; overflow: hidden; background-size: cover; background-position: center; background-repeat: no-repeat;">
+                        <img src="https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400&h=250&fit=crop" alt="Mini Pocket">
+                        <div class="gallery-overlay" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(255, 255, 255, 0.95); color: #2d133b; padding: 10px 20px; border-radius: 20px; font-size: 0.9em; font-weight: 600; opacity: 0; transition: opacity 0.3s ease;">Mini Size</div>
+                    </div>
+                    <div class="gallery-content" style="padding: 25px;">
+                        <h3 class="gallery-title" style="font-size: 1.3em; font-weight: 700; color: #2d133b; margin: 0 0 10px 0;">Mini Pocket Notebook</h3>
+                        <p class="gallery-description" style="color: #6c757d; font-size: 0.95em; line-height: 1.5; margin: 0 0 20px 0;">Ultra-compact pocket notebook perfect for quick notes and ideas.</p>
+                        <div class="gallery-price" style="font-size: 1.2em; font-weight: 700; color: #28a745; margin: 0 0 15px 0;">₹60</div>
+                        <a href="#contact" class="gallery-cta" style="background: linear-gradient(45deg, #667eea, #764ba2); color: white; text-decoration: none; padding: 12px 24px; border-radius: 25px; font-weight: 600; display: inline-block; transition: all 0.3s ease; text-align: center; width: 100%; box-sizing: border-box; font-size: 1em;">Order Now</a>
+                    </div>
+                </div>
+                
+                <div class="gallery-item category-pocket" data-category="pocket" style="background: white; border-radius: 15px; overflow: hidden; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1); transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);">
+                    <div class="gallery-image" style="width: 100%; height: 250px; background: linear-gradient(45deg, #E91E63, #9C27B0); display: flex; align-items: center; justify-content: center; color: white; font-size: 1.5em; font-weight: bold; position: relative; overflow: hidden; background-size: cover; background-position: center; background-repeat: no-repeat;">
+                        <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&h=250&fit=crop" alt="Travel Pocket">
+                        <div class="gallery-overlay" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(255, 255, 255, 0.95); color: #2d133b; padding: 10px 20px; border-radius: 20px; font-size: 0.9em; font-weight: 600; opacity: 0; transition: opacity 0.3s ease;">Travel Ready</div>
+                    </div>
+                    <div class="gallery-content" style="padding: 25px;">
+                        <h3 class="gallery-title" style="font-size: 1.3em; font-weight: 700; color: #2d133b; margin: 0 0 10px 0;">Travel Pocket Journal</h3>
+                        <p class="gallery-description" style="color: #6c757d; font-size: 0.95em; line-height: 1.5; margin: 0 0 20px 0;">Compact travel journal with durable cover and waterproof pages.</p>
+                        <div class="gallery-price" style="font-size: 1.2em; font-weight: 700; color: #28a745; margin: 0 0 15px 0;">₹75</div>
+                        <a href="#contact" class="gallery-cta" style="background: linear-gradient(45deg, #667eea, #764ba2); color: white; text-decoration: none; padding: 12px 24px; border-radius: 25px; font-weight: 600; display: inline-block; transition: all 0.3s ease; text-align: center; width: 100%; box-sizing: border-box; font-size: 1em;">Order Now</a>
+                    </div>
+                </div>
+                
+                <!-- Premium Series -->
+                <div class="gallery-item category-premium" data-category="premium" style="background: white; border-radius: 15px; overflow: hidden; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1); transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);">
+                    <div class="gallery-image" style="width: 100%; height: 250px; background: linear-gradient(45deg, #607D8B, #455A64); display: flex; align-items: center; justify-content: center; color: white; font-size: 1.5em; font-weight: bold; position: relative; overflow: hidden; background-size: cover; background-position: center; background-repeat: no-repeat;">
+                        <img src="https://images.unsplash.com/photo-1589998059171-988d887df646?w=400&h=250&fit=crop" alt="Artisan Series">
+                        <div class="gallery-overlay" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(255, 255, 255, 0.95); color: #2d133b; padding: 10px 20px; border-radius: 20px; font-size: 0.9em; font-weight: 600; opacity: 0; transition: opacity 0.3s ease;">Artisan Made</div>
+                    </div>
+                    <div class="gallery-content" style="padding: 25px;">
+                        <h3 class="gallery-title" style="font-size: 1.3em; font-weight: 700; color: #2d133b; margin: 0 0 10px 0;">Artisan Series</h3>
+                        <p class="gallery-description" style="color: #6c757d; font-size: 0.95em; line-height: 1.5; margin: 0 0 20px 0;">Handcrafted premium notebook with artisanal binding and materials.</p>
+                        <div class="gallery-price" style="font-size: 1.2em; font-weight: 700; color: #28a745; margin: 0 0 15px 0;">₹450</div>
+                        <a href="#contact" class="gallery-cta" style="background: linear-gradient(45deg, #667eea, #764ba2); color: white; text-decoration: none; padding: 12px 24px; border-radius: 25px; font-weight: 600; display: inline-block; transition: all 0.3s ease; text-align: center; width: 100%; box-sizing: border-box; font-size: 1em;">Order Now</a>
+                    </div>
+                </div>
+                
+                <div class="gallery-item category-premium" data-category="premium" style="background: white; border-radius: 15px; overflow: hidden; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1); transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);">
+                    <div class="gallery-image" style="width: 100%; height: 250px; background: linear-gradient(45deg, #607D8B, #455A64); display: flex; align-items: center; justify-content: center; color: white; font-size: 1.5em; font-weight: bold; position: relative; overflow: hidden; background-size: cover; background-position: center; background-repeat: no-repeat;">
+                        <img src="https://images.unsplash.com/photo-1455390582262-044cdead277a?w=400&h=250&fit=crop" alt="Signature Collection">
+                        <div class="gallery-overlay" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(255, 255, 255, 0.95); color: #2d133b; padding: 10px 20px; border-radius: 20px; font-size: 0.9em; font-weight: 600; opacity: 0; transition: opacity 0.3s ease;">Signature Edition</div>
+                    </div>
+                    <div class="gallery-content" style="padding: 25px;">
+                        <h3 class="gallery-title" style="font-size: 1.3em; font-weight: 700; color: #2d133b; margin: 0 0 10px 0;">Signature Collection</h3>
+                        <p class="gallery-description" style="color: #6c757d; font-size: 0.95em; line-height: 1.5; margin: 0 0 20px 0;">Limited edition premium notebook with exclusive design and numbering.</p>
+                        <div class="gallery-price" style="font-size: 1.2em; font-weight: 700; color: #28a745; margin: 0 0 15px 0;">₹550</div>
+                        <a href="#contact" class="gallery-cta" style="background: linear-gradient(45deg, #667eea, #764ba2); color: white; text-decoration: none; padding: 12px 24px; border-radius: 25px; font-weight: 600; display: inline-block; transition: all 0.3s ease; text-align: center; width: 100%; box-sizing: border-box; font-size: 1em;">Order Now</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Product Showcase Section -->
+    <section id="products" class="product-showcase" style="scroll-margin-top:80px;">
+        <div class="about-section">
+            <h2>🎨 Our Premium Products</h2>
+            <p>Discover our comprehensive range of custom notebooks, each meticulously crafted with premium materials and innovative designs to meet your every need.</p>
+            
+            <div class="product-categories">
+                <div class="product-category">
+                    <h3>📚 Notebook Types</h3>
+                    <div class="product-grid">
+                        <div class="product-item">
+                            <img src="https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?auto=format&fit=crop&w=300&q=80" alt="Spiral-bound">
+                            <h4>Spiral-bound</h4>
+                            <p>Perfect for students and professionals. Pages lay flat for easy writing and comfortable note-taking experience.</p>
+                        </div>
+                        <div class="product-item">
+                            <img src="https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=300&q=80" alt="Hardcover">
+                            <h4>Hardcover</h4>
+                            <p>Premium quality with durable covers. Ideal for long-term use, gifting, and professional presentations.</p>
+                        </div>
+                        <div class="product-item">
+                            <img src="https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&w=300&q=80" alt="Softcover">
+                            <h4>Softcover</h4>
+                            <p>Lightweight and flexible design. Great for everyday use, travel, and casual note-taking.</p>
+                        </div>
+                        <div class="product-item">
+                            <img src="https://images.unsplash.com/photo-1481627834876-b7833e8f5570?auto=format&fit=crop&w=300&q=80" alt="Pocket-sized">
+                            <h4>Pocket-sized</h4>
+                            <p>Compact notebooks that fit perfectly in your pocket or bag. Perfect for quick notes and on-the-go creativity.</p>
+                        </div>
+                        <div class="product-item">
+                            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=300&q=80" alt="Ring Binder">
+                            <h4>Ring Binder</h4>
+                            <p>Versatile ring binder notebooks with removable pages. Perfect for organizing and customizing your notes.</p>
+                        </div>
+                        <div class="product-item">
+                            <img src="https://images.unsplash.com/photo-1541339907198-e08756dedf3f?auto=format&fit=crop&w=300&q=80" alt="Stitched Binding">
+                            <h4>Stitched Binding</h4>
+                            <p>Traditional stitched binding for a classic look. Durable and elegant, perfect for journals and diaries.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="product-category">
+                    <h3>📝 Paper Quality Options</h3>
+                    <div class="product-grid">
+                        <div class="product-item">
+                            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=300&q=80" alt="Lined Paper">
+                            <h4>Lined Paper</h4>
+                            <p>Classic lined pages for neat writing and organized note-taking. Perfect for students and professionals.</p>
+                        </div>
+                        <div class="product-item">
+                            <img src="https://images.unsplash.com/photo-1516979187457-637abb4f9353?auto=format&fit=crop&w=300&q=80" alt="Blank Paper">
+                            <h4>Blank Paper</h4>
+                            <p>Clean blank pages for drawing, sketching, and free-form writing. Unleash your creativity without boundaries.</p>
+                        </div>
+                        <div class="product-item">
+                            <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=300&q=80" alt="Dotted Paper">
+                            <h4>Dotted Paper</h4>
+                            <p>Dotted grid for bullet journaling, planning, and creative layouts. Perfect for organized minds and creative souls.</p>
+                        </div>
+                        <div class="product-item">
+                            <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=300&q=80" alt="Graph Paper">
+                            <h4>Graph Paper</h4>
+                            <p>Grid paper perfect for math, technical drawings, and precise layouts. Ideal for engineers and designers.</p>
+                        </div>
+                        <div class="product-item">
+                            <img src="https://images.unsplash.com/photo-1578662996442-48f60103fc96?auto=format&fit=crop&w=300&q=80" alt="Premium Art Paper">
+                            <h4>Premium Art Paper</h4>
+                            <p>High-quality art paper with smooth texture. Perfect for sketching, watercolors, and artistic expressions.</p>
+                        </div>
+                        <div class="product-item">
+                            <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&w=300&q=80" alt="Recycled Paper">
+                            <h4>Recycled Paper</h4>
+                            <p>Eco-friendly recycled paper with natural texture. Sustainable choice for environmentally conscious users.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="product-category">
+                    <h3>📏 Size Varieties</h3>
+                    <div class="product-grid">
+                        <div class="product-item">
+                            <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&w=300&q=80" alt="A4 Size">
+                            <h4>A4 Size</h4>
+                            <p>Large format (210×297mm) for detailed work and presentations. Perfect for comprehensive note-taking and planning.</p>
+                        </div>
+                        <div class="product-item">
+                            <img src="https://images.unsplash.com/photo-1568667256549-094345857637?auto=format&fit=crop&w=300&q=80" alt="A5 Size">
+                            <h4>A5 Size</h4>
+                            <p>Standard size (148×210mm) - our most popular choice. Perfect balance of portability and writing space.</p>
+                        </div>
+                        <div class="product-item">
+                            <img src="https://images.unsplash.com/photo-1578662996442-48f60103fc96?auto=format&fit=crop&w=300&q=80" alt="A6 Size">
+                            <h4>A6 Size</h4>
+                            <p>Compact size (105×148mm) for pocket notebooks and journals. Ideal for quick notes and daily planning.</p>
+                        </div>
+                        <div class="product-item">
+                            <img src="https://images.unsplash.com/photo-1513475382585-d06e58bcb0e0?auto=format&fit=crop&w=300&q=80" alt="Custom Size">
+                            <h4>Custom Size</h4>
+                            <p>Any size you need - we can create notebooks to your exact specifications. Your vision, our craftsmanship.</p>
+                        </div>
+                        <div class="product-item">
+                            <img src="https://images.unsplash.com/photo-1481627834876-b7833e8f5570?auto=format&fit=crop&w=300&q=80" alt="B5 Size">
+                            <h4>B5 Size</h4>
+                            <p>Medium-large size (176×250mm) for comfortable writing. Popular choice for students and professionals.</p>
+                        </div>
+                        <div class="product-item">
+                            <img src="https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&w=300&q=80" alt="A7 Size">
+                            <h4>A7 Size</h4>
+                            <p>Ultra-compact size (74×105mm) for mini notebooks. Perfect for keychain notebooks and tiny journals.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing & Packages Section -->
+    <section id="pricing" style="scroll-margin-top:80px;">
+        <div class="about-section">
+            <h2>Pricing & Packages</h2>
+            <p>Choose the perfect package for your custom notebook needs.</p>
+            
+            <div class="pricing-grid">
+                <div class="pricing-card">
+                    <div class="pricing-header">
+                        <h3>Basic Package</h3>
+                        <div class="price">₹299</div>
+                        <div class="price-desc">Perfect for simple designs</div>
+                    </div>
+                    <div class="pricing-features">
+                        <div class="feature">✓ Custom cover design</div>
+                        <div class="feature">✓ A5 size notebook</div>
+                        <div class="feature">✓ 100 lined pages</div>
+                        <div class="feature">✓ Standard paper quality</div>
+                        <div class="feature">✓ 3-5 days delivery</div>
+                        <div class="feature">✓ Free local delivery</div>
+                    </div>
+                    <a href="#contact" class="pricing-btn">Order Now</a>
+                </div>
+
+                <div class="pricing-card featured">
+                    <div class="pricing-badge">Most Popular</div>
+                    <div class="pricing-header">
+                        <h3>Premium Package</h3>
+                        <div class="price">₹499</div>
+                        <div class="price-desc">Best value for quality</div>
+                    </div>
+                    <div class="pricing-features">
+                        <div class="feature">✓ Complex custom design</div>
+                        <div class="feature">✓ Choice of size (A4/A5/A6)</div>
+                        <div class="feature">✓ 150 premium pages</div>
+                        <div class="feature">✓ Choice of paper type</div>
+                        <div class="feature">✓ 2-3 days delivery</div>
+                        <div class="feature">✓ Free delivery nationwide</div>
+                        <div class="feature">✓ Personal message inside</div>
+                    </div>
+                    <a href="#contact" class="pricing-btn">Order Now</a>
+                </div>
+
+                <div class="pricing-card">
+                    <div class="pricing-header">
+                        <h3>Bulk Orders</h3>
+                        <div class="price">₹199</div>
+                        <div class="price-desc">Per notebook (10+ pieces)</div>
+                    </div>
+                    <div class="pricing-features">
+                        <div class="feature">✓ Custom design for all</div>
+                        <div class="feature">✓ Any size and paper type</div>
+                        <div class="feature">✓ Volume discounts</div>
+                        <div class="feature">✓ Priority processing</div>
+                        <div class="feature">✓ 1-2 days delivery</div>
+                        <div class="feature">✓ Free delivery</div>
+                        <div class="feature">✓ Corporate branding</div>
+                    </div>
+                    <a href="#contact" class="pricing-btn">Order Now</a>
+                </div>
+            </div>
+
+            <div class="pricing-notes">
+                <h3>Additional Services</h3>
+                <div class="service-grid">
+                    <div class="service-item">
+                        <strong>Rush Orders:</strong> +₹100 for same-day delivery
+                    </div>
+                    <div class="service-item">
+                        <strong>Extra Pages:</strong> +₹50 for 50 additional pages
+                    </div>
+                    <div class="service-item">
+                        <strong>Premium Paper:</strong> +₹75 for art paper or textured finish
+                    </div>
+                    <div class="service-item">
+                        <strong>Personalization:</strong> +₹25 for name/date embossing
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Customer Reviews Section -->
+    <section id="reviews" style="scroll-margin-top:80px;">
+        <div class="about-section">
+            <h2>What Our Customers Say</h2>
+            <p>Real reviews from satisfied customers who love their custom notebooks.</p>
+            
+            <div class="reviews-grid">
+                <div class="review-card">
+                    <div class="review-header">
+                        <img src="https://randomuser.me/api/portraits/women/32.jpg" alt="Customer" class="review-avatar">
+                        <div class="review-info">
+                            <div class="review-name">Priya Sharma</div>
+                            <div class="review-rating">⭐⭐⭐⭐⭐</div>
+                            <div class="review-date">2 days ago</div>
+                        </div>
+                    </div>
+                    <div class="review-content">
+                        "The custom notebook was exactly what I wanted! The quality is amazing and the cover design was perfect. I ordered it for my daughter's birthday and she absolutely loved it. The paper quality is excellent for writing and drawing."
+                    </div>
+                    <div class="review-photo">
+                        <img src="https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?auto=format&fit=crop&w=200&q=80" alt="Customer's notebook">
+                    </div>
+                </div>
+
+                <div class="review-card">
+                    <div class="review-header">
+                        <img src="https://randomuser.me/api/portraits/men/45.jpg" alt="Customer" class="review-avatar">
+                        <div class="review-info">
+                            <div class="review-name">Rahul Mehta</div>
+                            <div class="review-rating">⭐⭐⭐⭐⭐</div>
+                            <div class="review-date">1 week ago</div>
+                        </div>
+                    </div>
+                    <div class="review-content">
+                        "My kids loved their personalized notebooks. Thank you for making their school supplies so special! The dotted paper option is perfect for their bullet journaling. Fast delivery and beautiful packaging too."
+                    </div>
+                    <div class="review-photo">
+                        <img src="https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=200&q=80" alt="Customer's notebook">
+                    </div>
+                </div>
+
+                <div class="review-card">
+                    <div class="review-header">
+                        <img src="https://randomuser.me/api/portraits/women/28.jpg" alt="Customer" class="review-avatar">
+                        <div class="review-info">
+                            <div class="review-name">Anjali Kapoor</div>
+                            <div class="review-rating">⭐⭐⭐⭐⭐</div>
+                            <div class="review-date">2 weeks ago</div>
+                        </div>
+                    </div>
+                    <div class="review-content">
+                        "Fast delivery and beautiful work. I'll definitely order again for gifts! The premium package was worth every penny. The paper quality is superior and the custom design turned out exactly as I imagined."
+                    </div>
+                    <div class="review-photo">
+                        <img src="https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&w=200&q=80" alt="Customer's notebook">
+                    </div>
+                </div>
+
+                <div class="review-card">
+                    <div class="review-header">
+                        <img src="https://randomuser.me/api/portraits/men/67.jpg" alt="Customer" class="review-avatar">
+                        <div class="review-info">
+                            <div class="review-name">Vikram Singh</div>
+                            <div class="review-rating">⭐⭐⭐⭐⭐</div>
+                            <div class="review-date">3 weeks ago</div>
+                        </div>
+                    </div>
+                    <div class="review-content">
+                        "Ordered 50 notebooks for our company's annual meeting. The bulk order discount was great and the corporate branding looked professional. Everyone loved their personalized notebooks!"
+                    </div>
+                    <div class="review-photo">
+                        <img src="https://images.unsplash.com/photo-1481627834876-b7833e8f5570?auto=format&fit=crop&w=200&q=80" alt="Customer's notebook">
+                    </div>
+                </div>
+            </div>
+
+            <div class="reviews-stats">
+                <div class="stat-item">
+                    <div class="stat-number">4.9</div>
+                    <div class="stat-label">Average Rating</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">500+</div>
+                    <div class="stat-label">Happy Customers</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">98%</div>
+                    <div class="stat-label">Satisfaction Rate</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">24h</div>
+                    <div class="stat-label">Average Delivery</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" style="scroll-margin-top:80px; background: linear-gradient(120deg, #f3e7fa 0%, #e0c3fc 100%); padding: 3.5rem 0 4rem 0;">
+        <div id="contact-message-container"></div>
+        
+        <div class="contact-modern-wrapper" style="max-width: 900px; margin: 0 auto; display: flex; flex-wrap: wrap; gap: 2.5rem; background: rgba(255,255,255,0.85); border-radius: 22px; box-shadow: 0 8px 32px #a044ff22; padding: 2.5rem 2rem; align-items: stretch;">
+            <div class="contact-modern-form-col" style="flex: 1 1 320px; min-width: 280px; display: flex; flex-direction: column; justify-content: center;">
+                <h2 class="contact-modern-title" style="color: #6a3093; font-size: 2.1rem; font-weight: 800; margin-bottom: 0.7rem; letter-spacing: 1px;">Get in Touch</h2>
+                <p class="contact-modern-desc" style="color: #2d133b; font-size: 1.08rem; margin-bottom: 1.5rem;">Have a question, want a quote, or ready to order? Fill out the form and we'll reply within 24 hours!</p>
+                <form class="contact-modern-form" enctype="multipart/form-data" method="post" th:action="@{/contact/submit}" style="display: flex; flex-direction: column; gap: 1rem;" onsubmit="return validateContactForm(event)">
+                    <input type="text" name="fullName" id="fullName" placeholder="Full Name" required style="padding: 0.8rem; border-radius: 8px; border: 2px solid #e0c3fc; font-size: 1rem;">
+                    <input type="email" name="email" id="email" placeholder="Email Address" required style="padding: 0.8rem; border-radius: 8px; border: 2px solid #e0c3fc; font-size: 1rem;">
+                    <input type="tel" name="phone" id="phone" placeholder="Phone Number" required style="padding: 0.8rem; border-radius: 8px; border: 2px solid #e0c3fc; font-size: 1rem;">
+                    <select name="subject" id="subject" required style="padding: 0.8rem; border-radius: 8px; border: 2px solid #e0c3fc; font-size: 1rem; color: #2d133b; background: #fff;">
+                        <option value="" disabled selected>Select Subject / Order Type</option>
+                        <option value="General Inquiry">General Inquiry</option>
+                        <option value="Custom Notebook Order">Custom Notebook Order</option>
+                        <option value="Bulk/Corporate Order">Bulk/Corporate Order</option>
+                        <option value="Collaboration/Partnership">Collaboration/Partnership</option>
+                        <option value="Other">Other</option>
+                    </select>
+                    <textarea name="message" id="message" placeholder="Your Message" rows="4" required style="padding: 0.8rem; border-radius: 8px; border: 2px solid #e0c3fc; font-size: 1rem;"></textarea>
+                    
+                    <!-- File Upload Section -->
+                    <div class="file-upload-section" style="border: 2px dashed #a044ff; border-radius: 8px; padding: 1rem; background: #faf7ff; text-align: center;">
+                        <label for="file" style="cursor: pointer; display: block;">
+                            <i class="fa fa-cloud-upload" style="font-size: 2rem; color: #a044ff; margin-bottom: 0.5rem;"></i>
+                            <div style="color: #6a3093; font-weight: 600; margin-bottom: 0.3rem;">Upload File (Optional)</div>
+                            <div style="color: #8e6fa3; font-size: 0.9rem; margin-bottom: 0.5rem;">Images or PDF files only, max 10MB</div>
+                            <input type="file" name="file" id="file" accept="image/*,application/pdf" style="display: none;" onchange="handleFileSelect(event)">
+                        </label>
+                        <div id="file-info" style="margin-top: 0.5rem; font-size: 0.9rem; color: #6a3093;"></div>
+                        <div id="file-error" style="color: #dc3545; font-size: 0.85rem; margin-top: 0.3rem;"></div>
+                </div>
+                        
+                <button type="submit" class="contact-modern-submit" style="background: linear-gradient(90deg, #a044ff 0%, #ffd700 100%); color: #fff; border: none; border-radius: 24px; font-size: 1.1rem; font-weight: 700; padding: 0.9rem 0; margin-top: 0.5rem; box-shadow: 0 2px 12px #a044ff22; cursor: pointer; transition: background 0.2s, transform 0.2s;">Send Message</button>
+                </form>
+            </div>
+            <div class="contact-modern-info-col" style="flex: 1 1 260px; min-width: 220px; display: flex; flex-direction: column; justify-content: center; gap: 2.2rem; background: rgba(245,245,255,0.7); border-radius: 16px; box-shadow: 0 2px 12px #a044ff11; padding: 2rem 1.2rem;">
+                <div>
+                    <h4 style="color: #6a3093; font-size: 1.13rem; margin-bottom: 0.7rem; font-weight: 700;">Contact Information</h4>
+                    <ul style="list-style: none; padding: 0; color: #2d133b; font-size: 1.01rem;">
+                        <li style="margin-bottom: 0.5rem;"><i class="fa fa-envelope"></i> <a href="mailto:customnotebook@gmail.com" style="color: #6a3093; text-decoration: underline;">customnotebook@gmail.com</a></li>
+                        <li style="margin-bottom: 0.5rem;"><i class="fa fa-phone"></i> <a href="tel:+91XXXXXXXXXX" style="color: #6a3093; text-decoration: underline;">+91-XXXXXXXXXX</a></li>
+                        <li style="margin-bottom: 0.5rem;"><i class="fa fa-instagram"></i> <a href="https://instagram.com/yourinsta" target="_blank" style="color: #6a3093; text-decoration: underline;">Instagram</a></li>
+                        <li><i class="fa fa-map-marker"></i> Mumbai, India</li>
+                    </ul>
+                </div>
+                <div class="contact-modern-social-row" style="display: flex; gap: 1.2rem; margin-top: 0.5rem;">
+                    <a href="https://instagram.com/yourinsta" target="_blank" aria-label="Instagram" style="font-size: 1.5rem; color: #a044ff;"><i class="fa fa-instagram"></i></a>
+                    <a href="https://wa.me/yourwhatsapplink" target="_blank" aria-label="WhatsApp" style="font-size: 1.5rem; color: #25d366;"><i class="fa fa-whatsapp"></i></a>
+                    <a href="mailto:customnotebook@gmail.com" aria-label="Email" style="font-size: 1.5rem; color: #6a3093;"><i class="fa fa-envelope"></i></a>
+                    <a href="#" aria-label="Facebook" style="font-size: 1.5rem; color: #4267B2;"><i class="fa fa-facebook"></i></a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div th:replace="fragments/footer :: footer"></div>
+
+    <script>
+        // Contact form handler
+        function handleForm(e) {
+            e.preventDefault();
+            document.getElementById('thankYouMsg').style.display = 'block';
+            e.target.reset();
+            setTimeout(() => {
+                document.getElementById('thankYouMsg').style.display = 'none';
+            }, 4000);
+            return false;
+        }
+        // Contact form success/error message display
+        (function() {
+            const params = new URLSearchParams(window.location.search);
+            const msgContainer = document.getElementById('contact-message-container');
+            if (params.has('success')) {
+                msgContainer.innerHTML = `<div style="background:linear-gradient(90deg,#a0e7a0,#b2f7b2);color:#155724;padding:1rem 1.5rem;margin-bottom:1.5rem;border-radius:10px;font-weight:600;font-size:1.1rem;text-align:center;box-shadow:0 2px 8px #a0e7a044;">Thank you! Your message was sent successfully. We'll get back to you soon.</div>`;
+            } else if (params.has('error')) {
+                const errorMsg = params.get('error').replace(/\+/g,' ');
+                msgContainer.innerHTML = `<div style="background:linear-gradient(90deg,#ffd6d6,#ffe0e0);color:#a94442;padding:1rem 1.5rem;margin-bottom:1.5rem;border-radius:10px;font-weight:600;font-size:1.1rem;text-align:center;box-shadow:0 2px 8px #ffd6d644;">${errorMsg}</div>`;
+            }
+        })();
+
+        // File upload handling
+        function handleFileSelect(event) {
+            const file = event.target.files[0];
+            const fileInfo = document.getElementById('file-info');
+            const fileError = document.getElementById('file-error');
+            
+            // Clear previous messages
+            fileInfo.textContent = '';
+            fileError.textContent = '';
+            
+            if (file) {
+                // File size validation (10MB = 10 * 1024 * 1024 bytes)
+                const maxSize = 10 * 1024 * 1024;
+                if (file.size > maxSize) {
+                    fileError.textContent = 'File size must be less than 10MB.';
+                    event.target.value = ''; // Clear the file input
+                    return;
+                }
+                
+                // File type validation
+                const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp', 'application/pdf'];
+                if (!allowedTypes.includes(file.type)) {
+                    fileError.textContent = 'Only image (JPEG, PNG, GIF, WebP) or PDF files are allowed.';
+                    event.target.value = ''; // Clear the file input
+                    return;
+                }
+                
+                // Display file info
+                const fileSizeMB = (file.size / (1024 * 1024)).toFixed(2);
+                fileInfo.innerHTML = `
+                    <div style="background: #e8f5e8; padding: 0.5rem; border-radius: 6px; border-left: 4px solid #28a745;">
+                        <i class="fa fa-check-circle" style="color: #28a745; margin-right: 0.5rem;"></i>
+                        <strong>${file.name}</strong> (${fileSizeMB} MB)
+                    </div>
+                `;
+            }
+        }
+
+        // Enhanced form validation
+        function validateContactForm(e) {
+            let valid = true;
+            const fileError = document.getElementById('file-error');
+            
+            // Clear previous file errors
+            fileError.textContent = '';
+            
+            // Basic field validation
+            const fullName = document.getElementById('fullName').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const phone = document.getElementById('phone').value.trim();
+            const subject = document.getElementById('subject').value;
+            const message = document.getElementById('message').value.trim();
+
+            // Name validation
+            if (fullName.length < 2) {
+                alert('Name must be at least 2 characters long.');
+                valid = false;
+            }
+            
+            // Email validation
+            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailPattern.test(email)) {
+                alert('Please enter a valid email address.');
+                valid = false;
+            }
+            
+            // Phone validation
+            if (phone.length < 10) {
+                alert('Please enter a valid phone number.');
+                valid = false;
+            }
+            
+            // Subject validation
+            if (!subject || subject === '') {
+                alert('Please select a subject.');
+                valid = false;
+            }
+            
+            // Message validation
+            if (message.length < 10) {
+                alert('Message must be at least 10 characters long.');
+                valid = false;
+            }
+            
+            // File validation
+            const fileInput = document.getElementById('file');
+            if (fileInput && fileInput.files.length > 0) {
+                const file = fileInput.files[0];
+                const maxSize = 10 * 1024 * 1024; // 10MB
+                const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp', 'application/pdf'];
+                
+                if (file.size > maxSize) {
+                    fileError.textContent = 'File size must be less than 10MB.';
+                    valid = false;
+                }
+                
+                if (!allowedTypes.includes(file.type)) {
+                    fileError.textContent = 'Only image (JPEG, PNG, GIF, WebP) or PDF files are allowed.';
+                    valid = false;
+                }
+            }
+            
+            if (!valid) {
+                e.preventDefault();
+                return false;
+            }
+            
+            // Show loading state
+            const submitBtn = e.target.querySelector('button[type="submit"]');
+            const originalText = submitBtn.innerHTML;
+            submitBtn.innerHTML = '<i class="fa fa-spinner fa-spin"></i> Sending...';
+            submitBtn.disabled = true;
+            
+            // Re-enable button after 5 seconds (fallback)
+            setTimeout(() => {
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+            }, 5000);
+            
+            return true;
+        }
+        // Hero Slider JS
+        let slideIndex = 1;
+        let slideTimer = null;
+        showSlides(slideIndex);
+        function changeSlide(n) {
+            showSlides(slideIndex += n);
+        }
+        function currentSlide(n) {
+            showSlides(slideIndex = n);
+        }
+        function showSlides(n) {
+            let i;
+            let slides = document.getElementsByClassName("slide");
+            let dots = document.getElementsByClassName("dot");
+            if (n > slides.length) {slideIndex = 1}
+            if (n < 1) {slideIndex = slides.length}
+            for (i = 0; i < slides.length; i++) {
+                slides[i].classList.remove("active");
+            }
+            for (i = 0; i < dots.length; i++) {
+                dots[i].classList.remove("active");
+            }
+            slides[slideIndex-1].classList.add("active");
+            dots[slideIndex-1].classList.add("active");
+            if (slideTimer) clearTimeout(slideTimer);
+            slideTimer = setTimeout(function() { changeSlide(1); }, 5000);
+        }
+
+        // Gallery Filter functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const filterButtons = document.querySelectorAll('.filter-btn');
+            const galleryItems = document.querySelectorAll('.gallery-item');
+            
+            filterButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    // Remove active class from all buttons
+                    filterButtons.forEach(btn => btn.classList.remove('active'));
+                    
+                    // Add active class to clicked button
+                    this.classList.add('active');
+                    
+                    const category = this.getAttribute('data-category');
+                    
+                    // Filter gallery items
+                    galleryItems.forEach(item => {
+                        const itemCategory = item.getAttribute('data-category');
+                        
+                        if (category === 'all' || itemCategory === category) {
+                            item.classList.remove('hidden');
+                            item.style.animation = 'fadeInUp 0.6s ease forwards';
+                        } else {
+                            item.classList.add('hidden');
+                        }
+                    });
+                });
+            });
+            
+            // Gallery item hover effects
+            galleryItems.forEach(item => {
+                item.addEventListener('mouseenter', function() {
+                    const overlay = this.querySelector('.gallery-overlay');
+                    if (overlay) {
+                        overlay.style.opacity = '1';
+                    }
+                });
+                
+                item.addEventListener('mouseleave', function() {
+                    const overlay = this.querySelector('.gallery-overlay');
+                    if (overlay) {
+                        overlay.style.opacity = '0';
+                    }
+                });
+            });
+            
+            // Smooth scrolling for anchor links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

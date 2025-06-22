@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Admin Login</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}" />
+    <style>
+        body { 
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .login-container { 
+            max-width: 400px; 
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95); 
+            border-radius: 15px; 
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1); 
+            padding: 40px 30px;
+            backdrop-filter: blur(10px);
+        }
+        h2 { 
+            color: #1a237e; 
+            text-align: center; 
+            margin-bottom: 30px;
+            font-size: 2em;
+            font-weight: 600;
+        }
+        label { 
+            display: block; 
+            margin-top: 18px; 
+            color: #333;
+            font-weight: 600;
+        }
+        input[type=text], input[type=password] { 
+            width: 100%; 
+            padding: 12px; 
+            margin-top: 8px; 
+            border: 2px solid #e0e0e0; 
+            border-radius: 8px; 
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+            box-sizing: border-box;
+        }
+        input[type=text]:focus, input[type=password]:focus {
+            border-color: #667eea;
+            outline: none;
+        }
+        button { 
+            width: 100%; 
+            margin-top: 30px; 
+            padding: 12px; 
+            background: linear-gradient(45deg, #667eea, #764ba2); 
+            color: #fff; 
+            border: none; 
+            border-radius: 8px; 
+            font-size: 16px; 
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+        button:hover {
+            transform: translateY(-2px);
+        }
+        .error { 
+            color: #d32f2f; 
+            text-align: center; 
+            margin-top: 15px; 
+            padding: 10px;
+            background: #ffebee;
+            border-radius: 6px;
+            border-left: 4px solid #d32f2f;
+        }
+        .success {
+            color: #388e3c;
+            text-align: center;
+            margin-top: 15px;
+            padding: 10px;
+            background: #e8f5e8;
+            border-radius: 6px;
+            border-left: 4px solid #388e3c;
+        }
+        .info {
+            color: #1976d2;
+            text-align: center;
+            margin-top: 15px;
+            padding: 10px;
+            background: #e3f2fd;
+            border-radius: 6px;
+            border-left: 4px solid #1976d2;
+        }
+    </style>
+</head>
+<body>
+<div class="login-container">
+    <h2>🔐 Admin Login</h2>
+    <form th:action="@{/admin/login}" method="post">
+        <label for="username">Username</label>
+        <input type="text" id="username" name="username" required />
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" required />
+        <button type="submit">Login</button>
+        
+        <!-- Error Messages -->
+        <div th:if="${errorMessage}" class="error" th:text="${errorMessage}">
+            ❌ Invalid username or password. Please try again.
+        </div>
+        <div th:if="${successMessage}" class="success" th:text="${successMessage}">
+            ✅ You have been successfully logged out.
+        </div>
+        <div th:if="${param.error}" class="error">
+            ❌ Invalid username or password. Please try again.
+        </div>
+        <div th:if="${param.error == 'access_denied'}" class="error">
+            ❌ Access denied. You don't have permission to access this area.
+        </div>
+        <div th:if="${param.logout}" class="success">
+            ✅ You have been successfully logged out.
+        </div>
+        <div th:if="${param.expired}" class="info">
+            ⏰ Your session has expired. Please login again.
+        </div>
+    </form>
+</div>
+</body>
+</html> 

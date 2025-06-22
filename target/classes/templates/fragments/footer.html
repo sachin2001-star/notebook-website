@@ -1,0 +1,780 @@
+<!-- Professional Footer Section -->
+<footer th:fragment="footer" class="footer-modern">
+    <div class="footer-waves">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
+            <path fill="#f8f9fa" fill-opacity="1" d="M0,96L48,112C96,128,192,160,288,160C384,160,480,128,576,122.7C672,117,768,139,864,154.7C960,171,1056,181,1152,165.3C1248,149,1344,107,1392,85.3L1440,64L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path>
+        </svg>
+    </div>
+    
+    <div class="footer-content">
+        <div class="footer-main">
+            <!-- Company Branding Section -->
+            <div class="footer-brand">
+                <div class="footer-logo">
+                    <div class="logo-icon">
+                        <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+                            <rect x="4" y="8" width="32" height="24" rx="2" fill="#ffd700" stroke="#1a237e" stroke-width="2"/>
+                            <line x1="8" y1="16" x2="32" y2="16" stroke="#1a237e" stroke-width="1.5"/>
+                            <line x1="8" y1="20" x2="28" y2="20" stroke="#1a237e" stroke-width="1.5"/>
+                            <line x1="8" y1="24" x2="24" y2="24" stroke="#1a237e" stroke-width="1.5"/>
+                            <circle cx="12" cy="12" r="1" fill="#1a237e"/>
+                        </svg>
+                    </div>
+                    <div class="logo-text">
+                <h3>Notebook Creations</h3>
+                        <p>Custom • Quality • Creativity</p>
+                    </div>
+                </div>
+                <p class="company-description">
+                    We specialize in creating beautiful, personalized notebooks that inspire creativity and organization. 
+                    From custom designs to bulk corporate orders, we bring your vision to life with premium quality materials 
+                    and exceptional craftsmanship.
+                </p>
+                <div class="footer-social">
+                    <a href="https://instagram.com/yourinsta" target="_blank" class="social-link instagram" aria-label="Follow us on Instagram">
+                        <i class="fa fa-instagram"></i>
+                    </a>
+                    <a href="https://wa.me/yourwhatsapplink" target="_blank" class="social-link whatsapp" aria-label="Chat with us on WhatsApp">
+                        <i class="fa fa-whatsapp"></i>
+                    </a>
+                    <a href="mailto:customnotebook@gmail.com" class="social-link email" aria-label="Send us an email">
+                        <i class="fa fa-envelope"></i>
+                    </a>
+                    <a href="#" class="social-link facebook" aria-label="Follow us on Facebook">
+                        <i class="fa fa-facebook"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Quick Links Section -->
+            <div class="footer-section">
+                <h4>Quick Links</h4>
+                <ul class="footer-links">
+                    <li><a href="#home" onclick="scrollToSection('home')">Home</a></li>
+                    <li><a href="#about" onclick="scrollToSection('about')">About Us</a></li>
+                    <li><a href="#services" onclick="scrollToSection('services')">Services</a></li>
+                    <li><a href="#gallery" onclick="scrollToSection('gallery')">Gallery</a></li>
+                    <li><a href="#testimonials" onclick="scrollToSection('testimonials')">Testimonials</a></li>
+                    <li><a href="#contact" onclick="scrollToSection('contact')">Contact</a></li>
+                </ul>
+            </div>
+
+            <!-- Services Section -->
+            <div class="footer-section">
+                <h4>Our Services</h4>
+                <ul class="footer-links">
+                    <li><a href="#services" onclick="scrollToSection('services')">Custom Notebooks</a></li>
+                    <li><a href="#services" onclick="scrollToSection('services')">Corporate Branding</a></li>
+                    <li><a href="#services" onclick="scrollToSection('services')">Bulk Orders</a></li>
+                    <li><a href="#services" onclick="scrollToSection('services')">Personalized Designs</a></li>
+                    <li><a href="#services" onclick="scrollToSection('services')">Premium Materials</a></li>
+                    <li><a href="#services" onclick="scrollToSection('services')">Fast Delivery</a></li>
+                </ul>
+            </div>
+
+            <!-- Contact Information Section -->
+            <div class="footer-section">
+                <h4>Contact Info</h4>
+                <div class="contact-info">
+                    <div class="contact-item">
+                        <i class="fa fa-map-marker"></i>
+                        <div>
+                            <strong>Address:</strong><br>
+                            Mumbai, Maharashtra<br>
+                            India
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fa fa-phone"></i>
+                        <div>
+                            <strong>Phone:</strong><br>
+                            <a href="tel:+91XXXXXXXXXX">+91-XXXXXXXXXX</a>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fa fa-envelope"></i>
+                        <div>
+                            <strong>Email:</strong><br>
+                            <a href="mailto:customnotebook@gmail.com">customnotebook@gmail.com</a>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fa fa-clock-o"></i>
+                        <div>
+                            <strong>Business Hours:</strong><br>
+                            Mon-Sat: 9:00 AM - 7:00 PM<br>
+                            Sunday: 10:00 AM - 5:00 PM
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Newsletter Section -->
+        <div class="footer-newsletter">
+            <div class="newsletter-content">
+                <h4>Stay Updated</h4>
+                <p>Subscribe to our newsletter for exclusive offers, new designs, and creative inspiration!</p>
+                <form class="newsletter-form" id="newsletterForm">
+                    <input type="email" placeholder="Enter your email address" required>
+                    <button type="submit">
+                        <i class="fa fa-paper-plane"></i>
+                        Subscribe
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Bottom Footer -->
+        <div class="footer-bottom">
+            <div class="footer-bottom-content">
+                <div class="copyright">
+                    <p>&copy; 2024 Notebook Creations. All rights reserved.</p>
+                </div>
+                <div class="footer-bottom-links">
+                    <a href="#" onclick="showPolicy('privacy')">Privacy Policy</a>
+                    <a href="#" onclick="showPolicy('terms')">Terms of Service</a>
+                    <a href="#" onclick="showPolicy('shipping')">Shipping Policy</a>
+                    <a href="#" onclick="showPolicy('refund')">Refund Policy</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Floating Contact Button -->
+    <div class="floating-contact">
+        <button class="floating-btn" onclick="scrollToContact()" aria-label="Get a quote">
+            <i class="fa fa-comments"></i>
+            <span>Get Quote</span>
+        </button>
+    </div>
+
+    <!-- Back to Top Button -->
+    <div class="back-to-top" id="backToTop">
+        <button onclick="scrollToTop()" aria-label="Back to top">
+            <i class="fa fa-chevron-up"></i>
+        </button>
+    </div>
+</footer>
+
+<style>
+/* Footer Styles */
+.footer-modern {
+    position: relative;
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 50%, #dee2e6 100%);
+    color: #495057;
+    margin-top: 4rem;
+    overflow: hidden;
+    border-top: 3px solid #ffd700;
+}
+
+.footer-waves {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 60px;
+    overflow: hidden;
+}
+
+.footer-waves svg {
+    width: 100%;
+    height: 100%;
+    animation: wave 6s ease-in-out infinite;
+}
+
+@keyframes wave {
+    0%, 100% { transform: translateX(0); }
+    50% { transform: translateX(-20px); }
+}
+
+.footer-content {
+    position: relative;
+    z-index: 2;
+    padding: 3rem 2rem 1rem 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.footer-main {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1.5fr;
+    gap: 3rem;
+    margin-bottom: 3rem;
+}
+
+/* Brand Section */
+.footer-brand {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.footer-logo {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.logo-icon {
+    background: linear-gradient(135deg, #ffd700, #ffb300);
+    border-radius: 12px;
+    padding: 0.8rem;
+    box-shadow: 0 4px 16px rgba(255, 215, 0, 0.3);
+    animation: logoGlow 3s ease-in-out infinite;
+}
+
+@keyframes logoGlow {
+    0%, 100% { box-shadow: 0 4px 16px rgba(255, 215, 0, 0.3); }
+    50% { box-shadow: 0 6px 24px rgba(255, 215, 0, 0.5); }
+}
+
+.logo-text h3 {
+    color: #1a237e;
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin: 0;
+    letter-spacing: 1px;
+}
+
+.logo-text p {
+    color: #6c757d;
+    font-size: 0.9rem;
+    margin: 0;
+    font-weight: 500;
+}
+
+.company-description {
+    color: #6c757d;
+    line-height: 1.6;
+    font-size: 0.95rem;
+    margin: 0;
+}
+
+.footer-social {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.social-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #1a237e, #283593);
+    color: #ffd700;
+    text-decoration: none;
+    font-size: 1.2rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(26, 35, 126, 0.2);
+    border: 2px solid transparent;
+}
+
+.social-link:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(26, 35, 126, 0.3);
+    border-color: #ffd700;
+}
+
+.social-link.instagram:hover {
+    background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+    color: white;
+    border-color: transparent;
+}
+
+.social-link.whatsapp:hover {
+    background: #25d366;
+    color: white;
+    border-color: transparent;
+}
+
+.social-link.email:hover {
+    background: #ea4335;
+    color: white;
+    border-color: transparent;
+}
+
+.social-link.facebook:hover {
+    background: #4267B2;
+    color: white;
+    border-color: transparent;
+}
+
+/* Footer Sections */
+.footer-section h4 {
+    color: #1a237e;
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    position: relative;
+}
+
+.footer-section h4::after {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: 0;
+    width: 40px;
+    height: 3px;
+    background: linear-gradient(90deg, #ffd700, #ffb300);
+    border-radius: 2px;
+}
+
+.footer-links {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.footer-links li {
+    margin-bottom: 0.8rem;
+}
+
+.footer-links a {
+    color: #6c757d;
+    text-decoration: none;
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+    position: relative;
+    padding-left: 0;
+}
+
+.footer-links a::before {
+    content: '→';
+    position: absolute;
+    left: -15px;
+    opacity: 0;
+    transition: all 0.3s ease;
+    color: #ffd700;
+}
+
+.footer-links a:hover {
+    color: #1a237e;
+    padding-left: 15px;
+    font-weight: 600;
+}
+
+.footer-links a:hover::before {
+    opacity: 1;
+}
+
+/* Contact Info */
+.contact-info {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.contact-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.8rem;
+    color: #6c757d;
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+.contact-item i {
+    color: #ffd700;
+    font-size: 1rem;
+    margin-top: 0.2rem;
+    min-width: 16px;
+}
+
+.contact-item a {
+    color: #1a237e;
+    text-decoration: none;
+    transition: color 0.3s ease;
+    font-weight: 500;
+}
+
+.contact-item a:hover {
+    color: #ffd700;
+}
+
+/* Newsletter Section */
+.footer-newsletter {
+    background: linear-gradient(135deg, #1a237e, #283593);
+    border-radius: 16px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 8px 24px rgba(26, 35, 126, 0.2);
+    position: relative;
+    overflow: hidden;
+}
+
+.footer-newsletter::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(45deg, rgba(255, 215, 0, 0.1) 0%, rgba(255, 179, 0, 0.1) 100%);
+    z-index: 1;
+}
+
+.newsletter-content {
+    text-align: center;
+    max-width: 500px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 2;
+}
+
+.newsletter-content h4 {
+    color: #ffd700;
+    font-size: 1.4rem;
+    margin-bottom: 0.5rem;
+    font-weight: 700;
+}
+
+.newsletter-content p {
+    color: #e8eaf6;
+    margin-bottom: 1.5rem;
+    font-size: 0.95rem;
+}
+
+.newsletter-form {
+    display: flex;
+    gap: 0.5rem;
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+.newsletter-form input {
+    flex: 1;
+    padding: 0.8rem 1rem;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.1);
+    color: #e8eaf6;
+    font-size: 0.9rem;
+    backdrop-filter: blur(10px);
+}
+
+.newsletter-form input::placeholder {
+    color: #c5cae9;
+}
+
+.newsletter-form input:focus {
+    outline: none;
+    border-color: #ffd700;
+    box-shadow: 0 0 0 3px rgba(255, 215, 0, 0.2);
+}
+
+.newsletter-form button {
+    padding: 0.8rem 1.5rem;
+    background: linear-gradient(135deg, #ffd700, #ffb300);
+    color: #1a237e;
+    border: none;
+    border-radius: 8px;
+    font-weight: 700;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.newsletter-form button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(255, 215, 0, 0.4);
+}
+
+/* Bottom Footer */
+.footer-bottom {
+    border-top: 1px solid #dee2e6;
+    padding-top: 1.5rem;
+    background: rgba(255, 255, 255, 0.5);
+    border-radius: 12px;
+    margin-top: 1rem;
+}
+
+.footer-bottom-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.copyright p {
+    color: #6c757d;
+    font-size: 0.9rem;
+    margin: 0;
+}
+
+.footer-bottom-links {
+    display: flex;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+}
+
+.footer-bottom-links a {
+    color: #1a237e;
+    text-decoration: none;
+    font-size: 0.85rem;
+    transition: color 0.3s ease;
+    font-weight: 500;
+}
+
+.footer-bottom-links a:hover {
+    color: #ffd700;
+}
+
+/* Floating Contact Button */
+.floating-contact {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    z-index: 1000;
+}
+
+.floating-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 1rem 1.5rem;
+    background: linear-gradient(135deg, #ffd700, #ffb300);
+    color: #1a237e;
+    border: none;
+    border-radius: 50px;
+    font-weight: 700;
+    font-size: 0.95rem;
+    cursor: pointer;
+    box-shadow: 0 8px 24px rgba(255, 215, 0, 0.4);
+    transition: all 0.3s ease;
+    animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+.floating-btn:hover {
+    transform: translateY(-5px) scale(1.05);
+    box-shadow: 0 12px 32px rgba(255, 215, 0, 0.6);
+}
+
+.floating-btn i {
+    font-size: 1.1rem;
+}
+
+/* Back to Top Button */
+.back-to-top {
+    position: fixed;
+    bottom: 2rem;
+    right: 8rem;
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+}
+
+.back-to-top.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+.back-to-top button {
+    width: 50px;
+    height: 50px;
+    background: linear-gradient(135deg, #1a237e, #283593);
+    color: #ffd700;
+    border: none;
+    border-radius: 50%;
+    font-size: 1.2rem;
+    cursor: pointer;
+    box-shadow: 0 4px 16px rgba(26, 35, 126, 0.4);
+    transition: all 0.3s ease;
+}
+
+.back-to-top button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 24px rgba(26, 35, 126, 0.6);
+    background: linear-gradient(135deg, #283593, #3949ab);
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+    .footer-main {
+        grid-template-columns: 1fr 1fr;
+        gap: 2rem;
+    }
+    
+    .footer-brand {
+        grid-column: 1 / -1;
+    }
+    
+    .back-to-top {
+        right: 6rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .footer-content {
+        padding: 2rem 1rem 1rem 1rem;
+    }
+    
+    .footer-main {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+    
+    .footer-bottom-content {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .newsletter-form {
+        flex-direction: column;
+    }
+    
+    .floating-contact {
+        bottom: 1rem;
+        right: 1rem;
+    }
+    
+    .floating-btn {
+        padding: 0.8rem 1.2rem;
+        font-size: 0.9rem;
+    }
+    
+    .floating-btn span {
+        display: none;
+    }
+    
+    .back-to-top {
+        bottom: 1rem;
+        right: 5rem;
+    }
+    
+    .back-to-top button {
+        width: 45px;
+        height: 45px;
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .footer-logo {
+        flex-direction: column;
+        text-align: center;
+        gap: 0.5rem;
+    }
+    
+    .footer-social {
+        justify-content: center;
+    }
+    
+    .contact-item {
+        flex-direction: column;
+        text-align: center;
+        gap: 0.3rem;
+    }
+    
+    .back-to-top {
+        right: 4rem;
+    }
+}
+</style>
+
+<script>
+// Smooth scrolling to sections
+function scrollToSection(sectionId) {
+    const section = document.getElementById(sectionId);
+    if (section) {
+        section.scrollIntoView({ 
+            behavior: 'smooth',
+            block: 'start'
+        });
+    }
+}
+
+// Scroll to contact section
+function scrollToContact() {
+    const contactSection = document.getElementById('contact');
+    if (contactSection) {
+        contactSection.scrollIntoView({ 
+            behavior: 'smooth',
+            block: 'start'
+        });
+    }
+}
+
+// Scroll to top function
+function scrollToTop() {
+    window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+    });
+}
+
+// Show policy modals (placeholder function)
+function showPolicy(policyType) {
+    const policies = {
+        privacy: 'Privacy Policy - We respect your privacy and protect your personal information...',
+        terms: 'Terms of Service - By using our services, you agree to these terms...',
+        shipping: 'Shipping Policy - We offer fast and reliable shipping across India...',
+        refund: 'Refund Policy - We offer a 30-day money-back guarantee...'
+    };
+    
+    alert(policies[policyType] || 'Policy information will be displayed here.');
+}
+
+// Back to top button visibility
+window.addEventListener('scroll', function() {
+    const backToTop = document.getElementById('backToTop');
+    if (window.scrollY > 300) {
+        backToTop.classList.add('show');
+    } else {
+        backToTop.classList.remove('show');
+    }
+});
+
+// Newsletter form handler
+document.addEventListener('DOMContentLoaded', function() {
+    const newsletterForm = document.getElementById('newsletterForm');
+    if (newsletterForm) {
+        newsletterForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const email = this.querySelector('input[type="email"]').value;
+            
+            // Show success message
+            const button = this.querySelector('button');
+            const originalText = button.innerHTML;
+            button.innerHTML = '<i class="fa fa-check"></i> Subscribed!';
+            button.style.background = 'linear-gradient(135deg, #4caf50, #45a049)';
+            
+            // Reset form
+            this.reset();
+            
+            // Reset button after 3 seconds
+            setTimeout(() => {
+                button.innerHTML = originalText;
+                button.style.background = 'linear-gradient(135deg, #ffd700, #ffb300)';
+            }, 3000);
+        });
+    }
+});
+
+// Add loading animation to social links
+document.addEventListener('DOMContentLoaded', function() {
+    const socialLinks = document.querySelectorAll('.social-link');
+    socialLinks.forEach(link => {
+        link.addEventListener('click', function() {
+            this.style.transform = 'scale(0.9)';
+            setTimeout(() => {
+                this.style.transform = '';
+            }, 150);
+        });
+    });
+});
+</script>

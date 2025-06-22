@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Endpoint Test</title>
+</head>
+<body>
+    <h1>Testing Your Endpoints</h1>
+    
+    <h2>Database Test</h2>
+    <button onclick="testDatabase()">Test Database Connection</button>
+    <div id="db-result"></div>
+    
+    <h2>File Upload Test</h2>
+    <input type="file" id="testFile">
+    <button onclick="testFileUpload()">Test File Upload</button>
+    <div id="file-result"></div>
+    
+    <script>
+        async function testDatabase() {
+            try {
+                const response = await fetch('/test-db');
+                const result = await response.text();
+                document.getElementById('db-result').innerHTML = '<p>Result: ' + result + '</p>';
+            } catch (error) {
+                document.getElementById('db-result').innerHTML = '<p style="color: red;">Error: ' + error.message + '</p>';
+            }
+        }
+        
+        async function testFileUpload() {
+            const fileInput = document.getElementById('testFile');
+            const file = fileInput.files[0];
+            
+            if (!file) {
+                alert('Please select a file first');
+                return;
+            }
+            
+            const formData = new FormData();
+            formData.append('file', file);
+            
+            try {
+                const response = await fetch('/test-upload', {
+                    method: 'POST',
+                    body: formData
+                });
+                const result = await response.text();
+                document.getElementById('file-result').innerHTML = '<p>Result: ' + result + '</p>';
+            } catch (error) {
+                document.getElementById('file-result').innerHTML = '<p style="color: red;">Error: ' + error.message + '</p>';
+            }
+        }
+    </script>
+</body>
+</html> 
