@@ -21,8 +21,11 @@ COPY src src
 # Build the application
 RUN ./mvnw clean package -DskipTests
 
+# Create data directory for H2 database
+RUN mkdir -p data
+
 # Expose port (will be overridden by Render's PORT environment variable)
 EXPOSE 8080
 
-# Run the application
-CMD ["java", "-jar", "target/notebook-business-0.0.1-SNAPSHOT.jar"] 
+# Run the application with production profile
+CMD ["java", "-Dspring.profiles.active=prod", "-jar", "target/notebook-business-0.0.1-SNAPSHOT.jar"] 

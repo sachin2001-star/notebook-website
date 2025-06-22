@@ -1,0 +1,12 @@
+target/
+.git/
+.gitignore
+README.md
+*.md
+.vscode/
+.idea/
+*.log
+maven-temp/
+maven.zip
+setup-maven.bat
+test-*.html 
